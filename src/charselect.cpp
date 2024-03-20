@@ -7,6 +7,7 @@
 #include "aoimagedisplay.h"
 #include "commondefs.h"
 #include "debug_functions.h"
+#include "modules/managers/april_fools_manager.h"
 #include "drpacket.h"
 #include "file_functions.h"
 #include "hardware_functions.h"
@@ -24,6 +25,34 @@
 void Courtroom::construct_char_select()
 {
   ui_char_select_background = new AOImageDisplay(this, ao_app);
+
+
+  p_AF24MonocoinText = new DRTextEdit(ui_char_select_background);
+  p_AF24MonocoinText->setReadOnly(true);
+  p_AF24MonocoinText->set_auto_align(false);
+  setupWidgetElement(p_AF24MonocoinText, "AF24_monocoin_text");
+  p_AF24MonocoinText->setFrameStyle(QFrame::NoFrame);
+
+
+  m_AF24CharacterFrame = new AOImageDisplay(ui_char_select_background, ao_app);
+  setupWidgetElement(m_AF24CharacterFrame, "AF24_charframe", "char_icon_frame", true);
+  m_AF24CharacterFrame->set_theme_image("char_icon_frame.png");
+
+
+  m_AF24MonocoinImage = new AOImageDisplay(ui_char_select_background, ao_app);
+  setupWidgetElement(m_AF24MonocoinImage, "AF24_monocoin", "monocoin", true);
+  m_AF24MonocoinImage->set_theme_image("monocoin.png");
+
+
+  m_AF24CharacterUnlockImage = new AOImageDisplay(ui_char_select_background, ao_app);
+  setupWidgetElement(m_AF24CharacterUnlockImage, "AF24_charicon", "char_locked", true);
+  m_AF24CharacterUnlockImage->set_theme_image("char_locked.png");
+  m_AF24CharacterUnlockImage->hide();
+
+  connect(pBtnCharSelectRandom, SIGNAL(clicked()), this, SLOT(OnCharRandomClicked()));
+
+  p_AF24MonoMachineBack = new DRStickerViewer(ao_app, this);
+  p_AF24MonoMachineCapsual = new DRStickerViewer(ao_app, this);
 
   ui_char_buttons = new CharacterSelectWidget(ui_char_select_background, ao_app);
 
@@ -62,7 +91,6 @@ void Courtroom::construct_char_select()
 
 void Courtroom::reconstruct_char_select()
 {
-
   QPoint f_spacing = ao_app->current_theme->get_widget_settings_spacing("char_buttons", "courtroom", "char_button_spacing");
 
   const int button_width = 60;
@@ -240,6 +268,11 @@ void Courtroom::char_clicked(int n_char)
     return;
   }
 
+  if(!AprilFoolsManager::get().isCharacterUnlocked(CharacterManager::get().GetServerCharaName(n_real_char)))
+  {
+    call_notice("Character not unlocked.");
+    return;
+  }
   if(!CharacterManager::get().GetCharacterInServer(n_real_char))
   {
     int filtered_char = n_real_char;

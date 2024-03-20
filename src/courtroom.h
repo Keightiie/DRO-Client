@@ -294,6 +294,7 @@ public:
   int adapt_numbered_items(QVector<T *> &item_vector, QString config_item_number, QString item_name);
   ReportCardReason m_current_reportcard_reason = ReportCardReason::None;
   QString m_area_description = "";
+  DRTextEdit *p_AF24MonocoinText = nullptr;
 
 signals:
   void loaded_theme();
@@ -456,6 +457,11 @@ private:
   AOImageDisplay *ui_vp_notepad_image = nullptr;
   DRTextEdit *ui_vp_notepad = nullptr;
 
+
+  DRStickerViewer *p_AF24MonoMachineBack = nullptr;
+  DRStickerViewer *p_AF24MonoMachineCapsual = nullptr;
+  QTimer l_hideTimer;
+  QTimer l_hatchTimer;
   DRStickerViewer *ui_vp_chatbox = nullptr;
   DRTextEdit *ui_vp_showname = nullptr;
   DRTextEdit *ui_vp_message = nullptr;
@@ -627,6 +633,11 @@ private:
 
   AOImageDisplay *ui_char_select_background = nullptr;
 
+
+  AOImageDisplay *m_AF24MonocoinImage = nullptr;
+  AOImageDisplay *m_AF24CharacterUnlockImage = nullptr;
+  AOImageDisplay *m_AF24CharacterFrame = nullptr;
+
   // abstract widget to hold char buttons
   QWidget *ui_char_buttons = nullptr;
   AOImageDisplay *ui_char_button_selector = nullptr;
@@ -665,6 +676,8 @@ private:
   AOButton *ui_player_list_right = nullptr;
   AOButton *ui_area_look = nullptr;
   DRTextEdit *ui_area_desc = nullptr;
+
+
 
 
   QVector<DrPlayerListEntry *> m_player_list;
@@ -871,7 +884,10 @@ private slots:
 
   void on_spectator_clicked();
   void OnCharRefreshClicked();
+  void OnGachaPull(int weight);
   void OnCharRandomClicked();
+  void OnMonoMachineHatch();
+  void OnMonoMachineEnd();
 
   //Player List
 

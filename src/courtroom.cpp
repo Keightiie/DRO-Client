@@ -55,6 +55,8 @@
 #include <QToolTip>
 #include <QVBoxLayout>
 
+#include <modules/managers/april_fools_manager.h>
+
 const int Courtroom::DEFAULT_WIDTH = 714;
 const int Courtroom::DEFAULT_HEIGHT = 668;
 
@@ -2741,6 +2743,44 @@ void Courtroom::OnCharRefreshClicked()
   pCharaSelectSeries->addItems(CharacterManager::get().GetCharacterPackages());
   m_current_chr_page = 0;
   set_char_select_page();
+
+  OnGachaPull(10);
+
+
+  //Mono Machine Testing
+
+}
+
+void Courtroom::OnGachaPull(int weight)
+{
+  QString l_characterName = "Kizuna Tomori_HD";
+
+  if(AprilFoolsManager::get().subtractMonocoins(weight))
+  {
+    QTimer::singleShot(7000, this, SLOT(OnMonoMachineEnd()));
+    QTimer::singleShot(4000, this, SLOT(OnMonoMachineHatch()));
+    p_AF24MonoMachineBack->show();
+    m_AF24CharacterUnlockImage->hide();
+    p_AF24MonoMachineCapsual->show();
+
+
+    const QString l_icon_path = ao_app->get_character_path(l_characterName, "char_icon.png");
+    if(file_exists(l_icon_path))
+    {
+      m_AF24CharacterUnlockImage->set_image(l_icon_path);
+    }
+    else
+    {
+      //TO-DO: Placeholder Image
+    };
+
+    p_AF24MonoMachineBack->restart();
+    p_AF24MonoMachineCapsual->restart();
+    l_hideTimer.start();
+    l_hatchTimer.start();
+    AprilFoolsManager::get().UnlockCharacter(l_characterName);
+
+  };
 }
 
 void Courtroom::OnCharRandomClicked()
@@ -2784,6 +2824,21 @@ void Courtroom::OnCharRandomClicked()
 
   ao_app->send_server_packet(
       DRPacket("CC", {QString::number(ao_app->get_client_id()), QString::number(n_real_char), "HDID"}));
+}
+
+void Courtroom::OnMonoMachineHatch()
+{
+  m_AF24CharacterUnlockImage->show();
+
+}
+
+void Courtroom::OnMonoMachineEnd()
+{
+  p_AF24MonoMachineBack->hide();
+  m_AF24CharacterUnlockImage->hide();
+
+  p_AF24MonoMachineCapsual->hide();
+  set_char_select_page();
 }
 
 void Courtroom::on_call_mod_clicked()

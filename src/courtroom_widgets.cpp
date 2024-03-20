@@ -171,6 +171,8 @@ void Courtroom::create_widgets()
   ui_ic_chatlog_scroll_topdown = setupButtonWidget("ic_chatlog_scroll_topdown", "ic_chatlog_scroll_topdown.png", "");
   ui_ic_chatlog_scroll_bottomup = setupButtonWidget("ic_chatlog_scroll_bottomup", "ic_chatlog_scroll_bottomup.png", "");
 
+
+
   ui_area_desc = new DRTextEdit(this);
   ui_area_desc->setReadOnly(true);
   ui_area_desc->set_auto_align(false);
@@ -688,6 +690,10 @@ void Courtroom::reset_widget_names()
       {"area_desc", ui_area_desc},
       {"pair_offset", pUIPairOffsetSlider},
       {"viewport_transition", SceneManager::get().GetTransition()},
+      {"AF24_monocoin", m_AF24MonocoinImage},
+      {"AF24_charicon", m_AF24CharacterUnlockImage},
+      {"AF24_monoMachine", p_AF24MonoMachineBack},
+      {"AF24_monoCapsual", p_AF24MonoMachineCapsual},
   };
 }
 
@@ -996,6 +1002,9 @@ void Courtroom::set_widgets()
   set_size_and_pos(ui_vp_chatbox, "ao2_chatbox", COURTROOM_DESIGN_INI, ao_app);
   set_sticker_play_once(ui_vp_chatbox, "ao2_chatbox", COURTROOM_CONFIG_INI, ao_app);
 
+  set_size_and_pos(p_AF24MonoMachineBack, "AF24_monoMachine", COURTROOM_DESIGN_INI, ao_app);
+  set_size_and_pos(p_AF24MonoMachineCapsual, "AF24_monoCapsual", COURTROOM_DESIGN_INI, ao_app);
+
   set_size_and_pos(ui_vp_music_area, "music_area", COURTROOM_DESIGN_INI, ao_app);
   ui_vp_music_area->show();
   set_size_and_pos(ui_vp_music_name, "music_name", COURTROOM_DESIGN_INI, ao_app);
@@ -1007,6 +1016,15 @@ void Courtroom::set_widgets()
   if (m_current_clock == -1)
     ui_vp_clock->hide();
   set_sticker_play_once(ui_vp_clock, "clock", COURTROOM_CONFIG_INI, ao_app);
+
+
+  p_AF24MonoMachineBack->set_theme_image("AF24_machine");
+  p_AF24MonoMachineBack->hide();
+
+  p_AF24MonoMachineCapsual->set_theme_image("AF24_capsual");
+  p_AF24MonoMachineCapsual->hide();
+
+
 
   ui_vp_chatbox->set_theme_image("chatmed");
   ui_vp_chatbox->hide();
@@ -1672,6 +1690,9 @@ void Courtroom::set_fonts()
 
   set_drtextedit_font(ui_area_desc, "area_desc", COURTROOM_FONTS_INI, ao_app);
   ui_area_desc->setPlainText(ui_area_desc->toPlainText());
+
+  set_drtextedit_font(p_AF24MonocoinText, "AF24_monocoin_text", COURTROOM_FONTS_INI, ao_app);
+  p_AF24MonocoinText->setPlainText(p_AF24MonocoinText->toPlainText());
 
   // Chatlog does not support drtextedit because html
   set_font(ui_ooc_chatlog, "server_chatlog", COURTROOM_FONTS_INI, ao_app);

@@ -38,6 +38,7 @@ private:
 
   QLabel *ui_character = nullptr;
   AOImageDisplay *ui_taken = nullptr;
+  AOImageDisplay *p_AF24Locked = nullptr;
 
   void showContextMenu(QPoint pos);
 };

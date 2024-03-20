@@ -89,6 +89,7 @@ HEADERS += \
   src/modules/json/theme_mode_reader.h \
   src/modules/json/theme_module_reader.h \
   src/modules/json/theme_reader.h \
+  src/modules/managers/april_fools_manager.h \
   src/modules/managers/character_manager.h \
   src/modules/managers/notify_manager.h \
   src/modules/managers/pair_manager.h \
@@ -187,6 +188,7 @@ SOURCES += \
   src/modules/json/theme_mode_reader.cpp \
   src/modules/json/theme_module_reader.cpp \
   src/modules/json/theme_reader.cpp \
+  src/modules/managers/april_fools_manager.cpp \
   src/modules/managers/character_manager.cpp \
   src/modules/managers/notify_manager.cpp \
   src/modules/managers/pair_manager.cpp \

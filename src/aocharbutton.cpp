@@ -11,6 +11,8 @@
 #include <QMenu>
 #include <QUrl>
 
+#include <modules/managers/april_fools_manager.h>
+
 AOCharButton::AOCharButton(QWidget *parent, AOApplication *p_ao_app, int x_pos, int y_pos)
     : QPushButton(parent)
 {
@@ -24,11 +26,18 @@ AOCharButton::AOCharButton(QWidget *parent, AOApplication *p_ao_app, int x_pos, 
   ui_character->resize(30, 30);
   ui_character->move(28, 28);
 
+         //
+
   ui_taken = new AOImageDisplay(this, ao_app);
   ui_taken->resize(60, 60);
   ui_taken->set_theme_image("char_taken.png");
   ui_taken->setAttribute(Qt::WA_TransparentForMouseEvents);
   ui_taken->hide();
+  p_AF24Locked = new AOImageDisplay(this, ao_app);
+  p_AF24Locked->resize(60, 60);
+  p_AF24Locked->set_theme_image("char_locked.png");
+  p_AF24Locked->setAttribute(Qt::WA_TransparentForMouseEvents);
+  p_AF24Locked->hide();
 
   this->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(this ,&QWidget::customContextMenuRequested, this, &AOCharButton::showContextMenu);
@@ -77,6 +86,15 @@ void AOCharButton::set_character(QString p_character, QString p_character_ini)
   ui_character->setVisible(l_is_different_chr);
   setToolTip(l_is_different_chr ? QString("%1 as %2").arg(m_character, QString(p_character_ini).replace("&", "&&"))
                                 : l_final_character);
+
+  if(!AprilFoolsManager::get().isCharacterUnlocked(p_character))
+  {
+    p_AF24Locked->show();
+  }
+  else
+  {
+    p_AF24Locked->hide();
+  }
 }
 
 void AOCharButton::set_taken(const bool p_enabled)
