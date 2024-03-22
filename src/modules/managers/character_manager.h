@@ -21,6 +21,8 @@ public:
   QVector<char_type> GetLastCharList();
   QVector<char_type> GetServerCharList();
 
+  QStringList GetServerCharacterNames();
+
   QString GetFilteredCharaName(int id);
   QString GetServerCharaName(int id);
 

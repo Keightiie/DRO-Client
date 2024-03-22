@@ -52,6 +52,8 @@
 #include <modules/theme/widgets/dro_line_edit.h>
 #include "modules/debug/time_debugger.h"
 
+#include <modules/managers/april_fools_manager.h>
+
 void Courtroom::create_widgets()
 {
   TimeDebugger::get().StartTimer("Theme Widgets");
@@ -129,7 +131,7 @@ void Courtroom::create_widgets()
   ui_vp_music_name->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   ui_vp_music_name->setReadOnly(true);
   music_anim = new QPropertyAnimation(ui_vp_music_name, "geometry", this);
-  set_music_text("DANGANRONPA ONLINE");
+  set_music_text("GACHARONPA ONLINE");
 
   ui_vp_clock = new DRStickerViewer(ao_app, this);
 
@@ -248,8 +250,11 @@ void Courtroom::create_widgets()
   PairManager::get().SetSlider(pUIPairOffsetSlider);
 
   pNotifyPopup = new RPNotifyMenu(this);
+  pAchivementPopup = new AchivementWidget(this);
 
   NotifyManager::get().ThemeSetupPopup(pNotifyPopup);
+
+  AprilFoolsManager::get().SetupAchivement(pAchivementPopup);
 
   ui_note_scroll_area = new QScrollArea(this);
   ui_note_scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -692,8 +697,12 @@ void Courtroom::reset_widget_names()
       {"viewport_transition", SceneManager::get().GetTransition()},
       {"AF24_monocoin", m_AF24MonocoinImage},
       {"AF24_charicon", m_AF24CharacterUnlockImage},
+      {"AF24_charframe", m_AF24CharacterFrame},
       {"AF24_monoMachine", p_AF24MonoMachineBack},
       {"AF24_monoCapsual", p_AF24MonoMachineCapsual},
+      {"AF24_achivement_popup", pAchivementPopup},
+      {"AF24_pullOne", p_AF24PullOne},
+      {"AF24_pullTen", p_AF24PullTen},
   };
 }
 
@@ -1236,6 +1245,7 @@ void Courtroom::set_widgets()
   update_music_text_anim();
 
   set_size_and_pos(pNotifyPopup, "notify_popup", COURTROOM_DESIGN_INI, ao_app);
+  set_size_and_pos(pAchivementPopup, "AF24_achivement_popup", COURTROOM_DESIGN_INI, ao_app);
   set_size_and_pos(pUIPairOffsetSlider, "pair_offset", COURTROOM_DESIGN_INI, ao_app);
 
   set_size_and_pos(ui_set_notes, "set_notes_button", COURTROOM_DESIGN_INI, ao_app);

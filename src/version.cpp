@@ -18,7 +18,7 @@ int get_release_version()
 
 int get_major_version()
 {
-  return 6;
+  return 7;
 }
 
 int get_minor_version()
@@ -33,7 +33,7 @@ VersionNumber get_version_number()
 
 QString get_post_version()
 {
-  return "rc01";
+  return "";
 }
 
 QString get_version_string()

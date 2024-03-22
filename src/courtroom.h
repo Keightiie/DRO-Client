@@ -62,6 +62,7 @@ class QLabel;
 
 #include <mk2/drplayer.h>
 
+#include <modules/theme/widgets/achivementwidget.h>
 #include <modules/theme/widgets/dro_line_edit.h>
 
 #include <modules/widgets/rpnotifymenu.h>
@@ -338,6 +339,7 @@ private:
 
 
   RPNotifyMenu *pNotifyPopup = nullptr;
+  AchivementWidget *pAchivementPopup = nullptr;
 
   //////////////
   QScrollArea *ui_note_scroll_area = nullptr;
@@ -656,6 +658,8 @@ private:
   AOButton *ui_spectator = nullptr;
   AOButton *pBtnCharSelectRefresh = nullptr;
   AOButton *pBtnCharSelectRandom = nullptr;
+  AOButton *p_AF24PullOne = nullptr;
+  AOButton *p_AF24PullTen = nullptr;
 
   QHash<QString, QWidget *> widget_names;
 
@@ -884,6 +888,8 @@ private slots:
 
   void on_spectator_clicked();
   void OnCharRefreshClicked();
+  void OnGachaPullOne();
+  void OnGachaPullTen();
   void OnGachaPull(int weight);
   void OnCharRandomClicked();
   void OnMonoMachineHatch();
@@ -954,6 +960,7 @@ private slots:
 
 public:
   bool is_audio_suppressed() const;
+  AOSystemPlayer *m_system_player = nullptr;
 
 public slots:
   void suppress_audio(bool p_enabled);
@@ -962,7 +969,6 @@ public slots:
 private:
   AOSfxPlayer *m_effects_player = nullptr;
   AOShoutPlayer *m_shouts_player = nullptr;
-  AOSystemPlayer *m_system_player = nullptr;
   AOMusicPlayer *m_music_player = nullptr;
   AOBlipPlayer *m_blips_player = nullptr;
   bool is_audio_muted = false;

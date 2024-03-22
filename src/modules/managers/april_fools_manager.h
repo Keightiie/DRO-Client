@@ -1,7 +1,10 @@
 #ifndef APRILFOOLSMANAGER_H
 #define APRILFOOLSMANAGER_H
 
+#include "modules/theme/widgets/achivementwidget.h"
+#include <QHash>
 #include <qstringlist.h>
+#include <datatypes.h>
 
 
 
@@ -18,6 +21,7 @@ public:
   QString UnlockCharacter();
   void GachaPull();
   void UnlockCharacter(QString t_character);
+  QString RandomCharacter(QStringList t_characterList, bool t_unique);
   bool isCharacterUnlocked(QString t_character);
 
   int getMonocoinCount();
@@ -25,14 +29,27 @@ public:
   bool subtractMonocoins(int t_count);
   void updateMonocoinDisplay();
 
+  void UnlockAchivement(AF24Achivements t_achivement);
+  void SetupAchivement(AchivementWidget *t_widget);
+
 
 
 private:
+  QHash<AF24Achivements, int> m_AchivementMonocoins =
+  {
+    {WELCOME, 10}
+
+  };
+
+  QHash<AF24Achivements, bool> m_AchivementUnlocked = { };
+
   AprilFoolsManager() {}
   static AprilFoolsManager s_Instance;
 
-  int m_MonocoinCount = 100;
-  QStringList m_UnlockedCharacters = {"Makoto_HD", "Hajime_HD", "Shuichi_HD", "Kaede Akamatsu_HD", "Shuichi Saihara_HD"};
+  AchivementWidget *p_AchivementPopup = nullptr;
+
+  int m_MonocoinCount = 9;
+  QStringList m_UnlockedCharacters = {"Hifumi_HD"};
 };
 
 #endif // APRILFOOLSMANAGER_H

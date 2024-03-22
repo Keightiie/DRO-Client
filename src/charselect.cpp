@@ -37,6 +37,7 @@ void Courtroom::construct_char_select()
   m_AF24CharacterFrame = new AOImageDisplay(ui_char_select_background, ao_app);
   setupWidgetElement(m_AF24CharacterFrame, "AF24_charframe", "char_icon_frame", true);
   m_AF24CharacterFrame->set_theme_image("char_icon_frame.png");
+  m_AF24CharacterFrame->hide();
 
 
   m_AF24MonocoinImage = new AOImageDisplay(ui_char_select_background, ao_app);
@@ -73,6 +74,9 @@ void Courtroom::construct_char_select()
   pCharaSelectSearch = setupLineEditWidget("character_search", "Search for a Character", "[CHARA SEARCH]", "", ui_char_select_background);
   pCharaSelectSeries = setupComboBoxWidget(CharacterManager::get().GetCharacterPackages() , "character_packages", "[PACKAGE FILTER]");
 
+  p_AF24PullOne = setupButtonWidget("AF24_pullOne", "pull_1.png", "x 1", ui_char_select_background);
+  p_AF24PullTen = setupButtonWidget("AF24_pullTen", "pull_10.png", "x 10", ui_char_select_background);
+
   connect(char_button_mapper, SIGNAL(mapped(int)), this, SLOT(char_clicked(int)));
   connect(ui_back_to_lobby, SIGNAL(clicked()), this, SLOT(on_back_to_lobby_clicked()));
 
@@ -85,6 +89,9 @@ void Courtroom::construct_char_select()
 
   connect(pBtnCharSelectRefresh, SIGNAL(clicked()), this, SLOT(OnCharRefreshClicked()));
   connect(pBtnCharSelectRandom, SIGNAL(clicked()), this, SLOT(OnCharRandomClicked()));
+
+  connect(p_AF24PullOne, SIGNAL(clicked()), this, SLOT(OnGachaPullOne()));
+  connect(p_AF24PullTen, SIGNAL(clicked()), this, SLOT(OnGachaPullTen()));
 
   reconstruct_char_select();
 }

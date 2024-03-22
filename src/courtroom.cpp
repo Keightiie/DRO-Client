@@ -376,6 +376,10 @@ void Courtroom::enter_courtroom(int p_cid)
 
   ui_char_select_background->hide();
   on_pos_dropdown_changed();
+
+
+  AprilFoolsManager::get().UnlockAchivement(WELCOME);
+
 }
 
 void Courtroom::done_received()
@@ -1475,6 +1479,7 @@ void Courtroom::handle_chatmessage_3()
   {
     if (f_message.contains(word, Qt::CaseInsensitive))
     {
+      if(f_message.startsWith("*pat")) AprilFoolsManager::get().UnlockAchivement(PAT);
       m_system_player->play(ao_app->get_sfx("word_call"));
       ao_app->alert(this);
       const QString name = "CLIENT";
@@ -2744,16 +2749,23 @@ void Courtroom::OnCharRefreshClicked()
   m_current_chr_page = 0;
   set_char_select_page();
 
+
+
+}
+
+void Courtroom::OnGachaPullOne()
+{
+  OnGachaPull(1);
+}
+
+void Courtroom::OnGachaPullTen()
+{
   OnGachaPull(10);
-
-
-  //Mono Machine Testing
-
 }
 
 void Courtroom::OnGachaPull(int weight)
 {
-  QString l_characterName = "Kizuna Tomori_HD";
+  QString l_characterName = AprilFoolsManager::get().RandomCharacter(CharacterManager::get().GetServerCharacterNames(), weight == 10);
 
   if(AprilFoolsManager::get().subtractMonocoins(weight))
   {
@@ -2761,6 +2773,7 @@ void Courtroom::OnGachaPull(int weight)
     QTimer::singleShot(4000, this, SLOT(OnMonoMachineHatch()));
     p_AF24MonoMachineBack->show();
     m_AF24CharacterUnlockImage->hide();
+    m_AF24CharacterFrame->hide();
     p_AF24MonoMachineCapsual->show();
 
 
@@ -2829,6 +2842,7 @@ void Courtroom::OnCharRandomClicked()
 void Courtroom::OnMonoMachineHatch()
 {
   m_AF24CharacterUnlockImage->show();
+  m_AF24CharacterFrame->show();
 
 }
 
@@ -2836,7 +2850,7 @@ void Courtroom::OnMonoMachineEnd()
 {
   p_AF24MonoMachineBack->hide();
   m_AF24CharacterUnlockImage->hide();
-
+  m_AF24CharacterFrame->hide();
   p_AF24MonoMachineCapsual->hide();
   set_char_select_page();
 }

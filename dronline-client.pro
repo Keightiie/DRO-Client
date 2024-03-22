@@ -97,6 +97,7 @@ HEADERS += \
   src/modules/networking/json_packet.h \
   src/modules/theme/theme_scene.h \
   src/modules/theme/thememanager.h \
+  src/modules/theme/widgets/achivementwidget.h \
   src/modules/theme/widgets/characterselectwidget.h \
   src/modules/theme/widgets/dro_combo_box.h \
   src/modules/theme/widgets/dro_line_edit.h \
@@ -196,6 +197,7 @@ SOURCES += \
   src/modules/networking/json_packet.cpp \
   src/modules/theme/theme_scene.cpp \
   src/modules/theme/thememanager.cpp \
+  src/modules/theme/widgets/achivementwidget.cpp \
   src/modules/theme/widgets/characterselectwidget.cpp \
   src/modules/theme/widgets/dro_combo_box.cpp \
   src/modules/theme/widgets/dro_line_edit.cpp \

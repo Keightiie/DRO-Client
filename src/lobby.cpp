@@ -42,7 +42,7 @@ Lobby::Lobby(AOApplication *p_ao_app)
   ao_config = new AOConfig(this);
   m_master_client = new DRMasterClient(this);
 
-  setWindowTitle("Danganronpa Online (" + get_version_string() + ")");
+  setWindowTitle("Gacharonpa Online (Chapter 1) (Season 1)");
 
   ui_background = new AOImageDisplay(this, ao_app);
   ui_public_server_filter = new AOButton(this, ao_app);

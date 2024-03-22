@@ -67,6 +67,16 @@ QVector<char_type> CharacterManager::GetServerCharList()
   CharacterTaken = {};
 }
 
+QStringList CharacterManager::GetServerCharacterNames()
+{
+  QStringList l_returnValue = {};
+  for(char_type l_chara : mServerCharacters)
+  {
+    l_returnValue.append(l_chara.name);
+  }
+  return l_returnValue;
+}
+
 QString CharacterManager::GetFilteredCharaName(int id)
 {
   return mFilteredChrList.at(id).name;

@@ -5,9 +5,11 @@
 #include <AOApplication.h>
 #include <optional>
 #include <qcolor.h>
+#include "aosystemplayer.h"
 #include "courtroom.h"
 #include "drtheme.h"
 #include "QTimer"
+#include "QRandomGenerator"
 
 
 AprilFoolsManager AprilFoolsManager::s_Instance;
@@ -26,6 +28,28 @@ void AprilFoolsManager::UnlockCharacter(QString t_character)
 {
   if(m_UnlockedCharacters.contains(t_character)) return;
   m_UnlockedCharacters.append(t_character);
+}
+
+
+QString AprilFoolsManager::RandomCharacter(QStringList t_characterList, bool t_unique)
+{
+  if (t_characterList.isEmpty())
+    return QString(); // Return an empty string if the list is empty
+
+
+  QStringList characterList = t_characterList;
+  characterList.removeDuplicates();
+
+  for(QString l_chara : m_UnlockedCharacters)
+  {
+    if(characterList.contains(l_chara))
+    {
+      if(t_unique) characterList.removeAll(l_chara);
+    }
+  }
+
+  int randomIndex = QRandomGenerator::global()->bounded(characterList.size());
+  return characterList[randomIndex];
 }
 
 bool AprilFoolsManager::isCharacterUnlocked(QString t_character)
@@ -79,4 +103,27 @@ void AprilFoolsManager::updateMonocoinDisplay()
   l_AOApp->m_courtroom->p_AF24MonocoinText->clear();
   QTextCursor l_cursor = l_AOApp->m_courtroom->p_AF24MonocoinText->textCursor();
   l_cursor.insertText("x" + QString::number(m_MonocoinCount), formatting);
+}
+
+void AprilFoolsManager::UnlockAchivement(AF24Achivements t_achivement)
+{
+  if(m_AchivementUnlocked.contains(t_achivement)) return;
+  m_AchivementUnlocked[t_achivement] = true;
+
+  AOApplication *l_AOApp = AOApplication::getInstance();
+  if(p_AchivementPopup != nullptr) p_AchivementPopup->SetAchivement(t_achivement);
+  if(m_AchivementMonocoins.contains(t_achivement))
+  {
+    addMonocoins(m_AchivementMonocoins[t_achivement]);
+  }
+  else
+  {
+    addMonocoins(10);
+  }
+  l_AOApp->m_courtroom->m_system_player->play(l_AOApp->get_sfx("achivement"));
+}
+
+void AprilFoolsManager::SetupAchivement(AchivementWidget *t_widget)
+{
+  p_AchivementPopup = t_widget;
 }

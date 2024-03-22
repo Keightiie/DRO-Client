@@ -144,7 +144,6 @@ void AOApplication::construct_courtroom()
 
   m_courtroom = new Courtroom(this);
 
-  AprilFoolsManager::get().updateMonocoinDisplay();
   connect(m_courtroom, SIGNAL(closing()), this, SLOT(on_courtroom_closing()));
   connect(m_courtroom, SIGNAL(destroyed()), this, SLOT(on_courtroom_destroyed()));
   is_courtroom_constructed = true;
