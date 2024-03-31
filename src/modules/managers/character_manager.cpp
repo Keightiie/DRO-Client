@@ -216,6 +216,50 @@ void CharacterManager::SaveFavoritesList()
   }
 }
 
+QStringList CharacterManager::LoadAFList(QString path)
+{
+  QStringList l_returnData = {};
+  QFile file(AOApplication::getInstance()->get_base_file_path(path));
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+  {
+    qDebug() << "Failed to open file for reading";
+    return l_returnData;
+  }
+
+  QTextStream in(&file);
+  while (!in.atEnd())
+  {
+    QString characterName = in.readLine().trimmed();
+
+    if (!characterName.isEmpty())
+    {
+      l_returnData.append(characterName);
+    }
+  }
+
+  file.close();
+
+  return l_returnData;
+}
+
+void CharacterManager::SaveAFList(QString path, QStringList t_characters)
+{
+  QFile file(AOApplication::getInstance()->get_base_file_path(path));
+  if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+  {
+    QTextStream out(&file);
+    for (const QString &character : t_characters)
+    {
+      out << character << "\n";
+    }
+    file.close();
+  }
+  else
+  {
+    qDebug() << "Save AF24 Failed";
+  }
+}
+
 int CharacterManager::GetFilteredId(int Id)
 {
   for (int j = 0; j < mServerCharacters.size(); j++)

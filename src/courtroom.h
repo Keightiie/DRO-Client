@@ -65,6 +65,7 @@ class QLabel;
 #include <modules/theme/widgets/achivementwidget.h>
 #include <modules/theme/widgets/dro_line_edit.h>
 
+#include <modules/widgets/aprilfoolsshop.h>
 #include <modules/widgets/rpnotifymenu.h>
 
 class Courtroom : public QWidget
@@ -296,6 +297,7 @@ public:
   ReportCardReason m_current_reportcard_reason = ReportCardReason::None;
   QString m_area_description = "";
   DRTextEdit *p_AF24MonocoinText = nullptr;
+  AprilFoolsShop *pShopMenu = nullptr;
 
 signals:
   void loaded_theme();

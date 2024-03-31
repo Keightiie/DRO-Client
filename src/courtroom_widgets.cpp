@@ -251,6 +251,7 @@ void Courtroom::create_widgets()
 
   pNotifyPopup = new RPNotifyMenu(this);
   pAchivementPopup = new AchivementWidget(this);
+  pShopMenu = new AprilFoolsShop(this);
 
   NotifyManager::get().ThemeSetupPopup(pNotifyPopup);
 
@@ -703,6 +704,7 @@ void Courtroom::reset_widget_names()
       {"AF24_achivement_popup", pAchivementPopup},
       {"AF24_pullOne", p_AF24PullOne},
       {"AF24_pullTen", p_AF24PullTen},
+      {"AF24_shopMenu", pShopMenu}
   };
 }
 
@@ -1246,6 +1248,7 @@ void Courtroom::set_widgets()
 
   set_size_and_pos(pNotifyPopup, "notify_popup", COURTROOM_DESIGN_INI, ao_app);
   set_size_and_pos(pAchivementPopup, "AF24_achivement_popup", COURTROOM_DESIGN_INI, ao_app);
+  set_size_and_pos(pShopMenu, "AF24_shopMenu", COURTROOM_DESIGN_INI, ao_app);
   set_size_and_pos(pUIPairOffsetSlider, "pair_offset", COURTROOM_DESIGN_INI, ao_app);
 
   set_size_and_pos(ui_set_notes, "set_notes_button", COURTROOM_DESIGN_INI, ao_app);

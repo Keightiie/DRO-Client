@@ -68,6 +68,7 @@ AOApplication::AOApplication(int &argc, char **argv)
   connect(m_server_socket, SIGNAL(packet_received(DRPacket)), this, SLOT(_p_handle_server_packet(DRPacket)));
 
   CharacterManager::get().LoadFavoritesList();
+  AprilFoolsManager::get().LoadSave();
   reload_packages();
   resolve_current_theme();
 }

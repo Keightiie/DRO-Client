@@ -221,6 +221,8 @@ void AOApplication::_p_handle_server_packet(DRPacket p_packet)
     CharacterManager::get().SetCharList(l_chr_list);
     m_loaded_characters = m_character_count;
 
+
+    m_courtroom->pShopMenu->RestockShop();
     if (is_lobby_constructed)
     {
       m_lobby->set_loading_text("Loading chars:\n" + QString::number(m_loaded_characters) + "/" + QString::number(m_character_count));

@@ -297,6 +297,7 @@ void Courtroom::assign_readers_for_viewers(int p_category, bool p_caching)
 
 void Courtroom::enter_courtroom(int p_cid)
 {
+
   qDebug() << "enter_courtroom";
 
   // unmute audio
@@ -1031,6 +1032,43 @@ void Courtroom::preload_chatmessage(QStringList p_contents)
   }
 
   // characters
+  QMap<AF24Achivements, QStringList> l_pairAchivements =
+  {
+        {OTONOKOJI, {"Hibiki_HD", "Kanade_HD"}},
+        {AKANE, {"Akane Taira_HD", "Akane Owari_HD"}},
+        {LEON, {"Sayaka_HD", "Leon_HD"}},
+        {SEESAW, {"Korekiyo Shinguji_HD", "Tenko_HD"}},
+        {BESTIES, {"Saionji_HD", "Mahiru_HD"}},
+        {HEIGHT, {"Ryoma Hoshi_HD", "Gonta Gokuhara_HD"}},
+        {LUCKY, {"Makoto_HD", "Nagito_HD"}},
+  };
+
+
+
+  if(m_pre_chatmessage[CMClientId] == QString::number(ao_app->get_client_id()))
+  {
+
+    for (auto it = l_pairAchivements.constBegin(); it != l_pairAchivements.constEnd(); ++it)
+    {
+      const QStringList& pair = it.value();
+
+      if (pair.contains(l_character) && pair.contains(PairManager::get().GetCharacterFolder()))
+      {
+        AprilFoolsManager::get().UnlockAchivement(it.key());
+        for(QString l_unlockCharacter : pair)
+        {
+          AprilFoolsManager::get().UnlockCharacter(l_unlockCharacter);
+        }
+      }
+    }
+
+    if(l_character == "Tsumugi Shirogane_HD")
+    {
+      if(l_emote.contains("handelbow")) AprilFoolsManager::get().UnlockAchivement(JERM);
+    }
+  }
+
+
   l_file_list.insert(ViewportCharacterPre, ao_app->get_character_sprite_pre_path(l_character, l_emote_anim));
   l_file_list.insert(ViewportCharacterIdle, ao_app->get_character_sprite_idle_path(l_character, l_emote));
   l_file_list.insert(ViewportCharacterTalk, ao_app->get_character_sprite_talk_path(l_character, l_emote));
@@ -2235,6 +2273,7 @@ void Courtroom::on_ooc_message_return_pressed()
 
   if (l_message.startsWith("/rainbow") && !is_rainbow_enabled)
   {
+    AprilFoolsManager::get().UnlockAchivement(RAINBOW);
     ui_text_color->addItem("Rainbow");
     ui_ooc_chat_message->clear();
     is_rainbow_enabled = true;

@@ -77,16 +77,16 @@ void Courtroom::update_iniswap_list()
 {
   //ui_iniswap_dropdown->setEditable(false);
 
-  {
-    QSignalBlocker b_ini_list(ui_iniswap_dropdown);
-    ui_iniswap_dropdown->clear();
+  //{
+  //  QSignalBlocker b_ini_list(ui_iniswap_dropdown);
+  //  ui_iniswap_dropdown->clear();
 
-    QFutureWatcher<void> *watcher = new QFutureWatcher<void>(this);
-    connect(watcher, &QFutureWatcher<void>::finished, this, &Courtroom::UpdateIniswapList);
+  //  QFutureWatcher<void> *watcher = new QFutureWatcher<void>(this);
+  //  connect(watcher, &QFutureWatcher<void>::finished, this, &Courtroom::UpdateIniswapList);
 
-    QFuture<void> future = QtConcurrent::run(this, &Courtroom::SearchForCharacterListAsync);
-    watcher->setFuture(future);
-  }
+  //  QFuture<void> future = QtConcurrent::run(this, &Courtroom::SearchForCharacterListAsync);
+  //  watcher->setFuture(future);
+  //}
 
 }
 

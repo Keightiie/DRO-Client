@@ -37,6 +37,10 @@ public:
   void LoadFavoritesList();
   void SaveFavoritesList();
 
+
+  QStringList LoadAFList(QString path);
+  void SaveAFList(QString path, QStringList t_characters);
+
   int GetAvaliablePersona();
 
   QStringList GetCharacterPackages();

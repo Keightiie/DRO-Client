@@ -3,6 +3,7 @@
 #include "commondefs.h"
 #include "file_functions.h"
 #include "modules/theme/thememanager.h"
+#include "modules/managers/april_fools_manager.h"
 
 AchivementWidget::AchivementWidget(QWidget *parent)
     : QWidget{parent}
@@ -21,13 +22,13 @@ AchivementWidget::AchivementWidget(QWidget *parent)
 
 void AchivementWidget::SetAchivement(AF24Achivements t_achivement)
 {
-  if(m_AchivementNames.contains(t_achivement))
+  if(AprilFoolsManager::get().m_AchivementNames.contains(t_achivement))
   {
-    p_AchivementName->setPlainText(m_AchivementNames[t_achivement]);
+    p_AchivementName->setPlainText(AprilFoolsManager::get().m_AchivementNames[t_achivement]);
   }
-  if(m_AchivementIcons.contains(t_achivement))
+  if(AprilFoolsManager::get().m_AchivementIcons.contains(t_achivement))
   {
-    p_AchivementIcon->set_theme_image(m_AchivementIcons[t_achivement]);
+    p_AchivementIcon->set_theme_image(AprilFoolsManager::get().m_AchivementIcons[t_achivement]);
   }
   else
   {

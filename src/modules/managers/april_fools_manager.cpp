@@ -1,4 +1,5 @@
 #include "april_fools_manager.h"
+#include "character_manager.h"
 #include "commondefs.h"
 
 #include "../theme/thememanager.h"
@@ -10,9 +11,37 @@
 #include "drtheme.h"
 #include "QTimer"
 #include "QRandomGenerator"
+#include "commondefs.h"
 
 
 AprilFoolsManager AprilFoolsManager::s_Instance;
+
+
+
+void AprilFoolsManager::LoadSave()
+{
+
+  QStringList l_saveData = CharacterManager::get().LoadAFList(AF24_SAVE);
+  if(l_saveData.count() < 3)
+  {
+    return;
+  }
+  m_UnlockedCharacters = fromBase64<QStringList>(l_saveData[0]);
+  m_AchivementUnlocked = fromBase64<QHash<AF24Achivements, bool>>(l_saveData[1]);
+  m_MonocoinCount = fromBase64<int>(l_saveData[2]);
+
+}
+
+void AprilFoolsManager::Save()
+{
+  QStringList l_achivements = {};
+  l_achivements.append(toBase64(m_UnlockedCharacters));
+  l_achivements.append(toBase64(m_AchivementUnlocked));
+  l_achivements.append(toBase64(m_MonocoinCount));
+
+
+  CharacterManager::get().SaveAFList(AF24_SAVE, l_achivements);
+}
 
 QString AprilFoolsManager::UnlockCharacter()
 {
@@ -28,6 +57,25 @@ void AprilFoolsManager::UnlockCharacter(QString t_character)
 {
   if(m_UnlockedCharacters.contains(t_character)) return;
   m_UnlockedCharacters.append(t_character);
+
+  for (auto it = m_CharacterUnlockConditions.constBegin(); it != m_CharacterUnlockConditions.constEnd(); ++it)
+  {
+    if (it.value().contains(t_character))
+    {
+      bool l_allCharsUnlocked = true;
+      for (const QString &character : it.value())
+      {
+        if (!m_UnlockedCharacters.contains(character)) l_allCharsUnlocked = false;
+      }
+
+      if(l_allCharsUnlocked)
+      {
+        AprilFoolsManager::get().UnlockAchivement(it.key());
+      }
+    }
+  }
+
+  Save();
 }
 
 
@@ -103,6 +151,7 @@ void AprilFoolsManager::updateMonocoinDisplay()
   l_AOApp->m_courtroom->p_AF24MonocoinText->clear();
   QTextCursor l_cursor = l_AOApp->m_courtroom->p_AF24MonocoinText->textCursor();
   l_cursor.insertText("x" + QString::number(m_MonocoinCount), formatting);
+  l_AOApp->m_courtroom->pShopMenu->UpdateMonocoins(m_MonocoinCount);
 }
 
 void AprilFoolsManager::UnlockAchivement(AF24Achivements t_achivement)
@@ -126,4 +175,26 @@ void AprilFoolsManager::UnlockAchivement(AF24Achivements t_achivement)
 void AprilFoolsManager::SetupAchivement(AchivementWidget *t_widget)
 {
   p_AchivementPopup = t_widget;
+}
+
+
+template<typename T>
+QString AprilFoolsManager::toBase64(const T& data) {
+  QByteArray byteArray;
+  QDataStream stream(&byteArray, QIODevice::WriteOnly);
+  stream << data;
+
+  QByteArray base64Data = byteArray.toBase64();
+  return QString(base64Data);
+}
+
+template<typename T>
+T AprilFoolsManager::fromBase64(const QString& base64String) {
+  QByteArray byteArray = QByteArray::fromBase64(base64String.toUtf8());
+  QDataStream stream(&byteArray, QIODevice::ReadOnly);
+
+  T data;
+  stream >> data;
+
+  return data;
 }

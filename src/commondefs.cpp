@@ -27,4 +27,6 @@ const QString LOBBY_DESIGN_INI = "lobby_design.ini";
 const QString LOBBY_FONTS_INI = "lobby_fonts.ini";
 
 const QString SAVE_FAVORITES = "configs/character_favorites.ini";
+const QString AF24_UNLOCKED = "configs/af24_unlocked.ini";
+const QString AF24_SAVE = "configs/af24_savedata.ini";
 const QString THEME_JSON = "theme.json";

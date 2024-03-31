@@ -23,17 +23,6 @@ public slots:
 private:
 
   QTimer m_UpTimeTimer;
-  QHash<AF24Achivements, QString> m_AchivementNames =
-  {
-    {WELCOME, "WELCOME TO DRO"},
-    {PAT, "PAT RECEIVER"}
-  };
-
-  QHash<AF24Achivements, QString> m_AchivementIcons =
-  {
-    {WELCOME, "achivements/welcome.png"},
-    {PAT, "achivements/pat.png"},
-  };
 
   DRStickerViewer *pBackgroundImage = nullptr;
   DRTextEdit *p_AchivementName = nullptr;

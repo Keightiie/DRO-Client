@@ -491,7 +491,7 @@ bool AOConfig::discord_hide_character() const
  */
 QString AOConfig::theme() const
 {
-  return d->theme;
+  return "SDRO2-AF23";
 }
 
 QString AOConfig::gamemode() const
