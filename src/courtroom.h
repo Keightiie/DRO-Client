@@ -912,6 +912,7 @@ private slots:
   // ===========================================================================
 
 public:
+  bool canGachaPull = true;
   using CharacterId = int;
   enum : CharacterId
   {

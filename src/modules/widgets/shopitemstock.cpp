@@ -3,7 +3,8 @@
 #include "commondefs.h"
 #include "file_functions.h"
 #include <QRandomGenerator>
-
+#include "courtroom.h"
+#include "aosystemplayer.h"
 #include <modules/theme/thememanager.h>
 
 #include <modules/managers/april_fools_manager.h>
@@ -70,6 +71,8 @@ void ShopItemStock::PurchaseStock()
   {
     AprilFoolsManager::get().UnlockCharacter(m_itemName);
     AprilFoolsManager::get().UnlockAchivement(PURCHASE);
+    AOApplication::getInstance()->m_courtroom->m_system_player->play(AOApplication::getInstance()->get_sfx("shop_buy"));
     SetStock(OutOfStock, "N/A");
+
   }
 }

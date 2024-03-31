@@ -2804,10 +2804,13 @@ void Courtroom::OnGachaPullTen()
 
 void Courtroom::OnGachaPull(int weight)
 {
+  if(!canGachaPull) return;
+
   QString l_characterName = AprilFoolsManager::get().RandomCharacter(CharacterManager::get().GetServerCharacterNames(), weight == 10);
 
   if(AprilFoolsManager::get().subtractMonocoins(weight))
   {
+    canGachaPull = false;
     QTimer::singleShot(7000, this, SLOT(OnMonoMachineEnd()));
     QTimer::singleShot(4000, this, SLOT(OnMonoMachineHatch()));
     p_AF24MonoMachineBack->show();
@@ -2828,6 +2831,7 @@ void Courtroom::OnGachaPull(int weight)
 
     p_AF24MonoMachineBack->restart();
     p_AF24MonoMachineCapsual->restart();
+    m_system_player->play(AOApplication::getInstance()->get_sfx("gacha_pull"));
     l_hideTimer.start();
     l_hatchTimer.start();
     AprilFoolsManager::get().UnlockCharacter(l_characterName);
@@ -2892,6 +2896,7 @@ void Courtroom::OnMonoMachineEnd()
   m_AF24CharacterFrame->hide();
   p_AF24MonoMachineCapsual->hide();
   set_char_select_page();
+  canGachaPull = true;
 }
 
 void Courtroom::on_call_mod_clicked()
