@@ -1034,13 +1034,22 @@ void Courtroom::preload_chatmessage(QStringList p_contents)
   // characters
   QMap<AF24Achivements, QStringList> l_pairAchivements =
   {
-        {OTONOKOJI, {"Hibiki_HD", "Kanade_HD"}},
-        {AKANE, {"Akane Taira_HD", "Akane Owari_HD"}},
-        {LEON, {"Sayaka_HD", "Leon_HD"}},
-        {SEESAW, {"Korekiyo Shinguji_HD", "Tenko_HD"}},
-        {BESTIES, {"Saionji_HD", "Mahiru_HD"}},
-        {HEIGHT, {"Ryoma Hoshi_HD", "Gonta Gokuhara_HD"}},
-        {LUCKY, {"Makoto_HD", "Nagito_HD"}},
+          {OTONOKOJI, {"Hibiki_HD", "Kanade_HD"}},
+          {AKANE, {"Akane Taira_HD", "Akane Owari_HD"}},
+          {LEON, {"Sayaka_HD", "Leon_HD"}},
+          {SEESAW, {"Korekiyo Shinguji_HD", "Tenko_HD"}},
+          {BESTIES, {"Saionji_HD", "Mahiru_HD"}},
+          {HEIGHT, {"Ryoma Hoshi_HD", "Gonta Gokuhara_HD"}},
+          {LUCKY, {"Makoto_HD", "Nagito_HD"}},
+          {SISTERS, {"Junko_HD", "JunkoMM_HD"}},
+          {SISTERS, {"Mukuro_HD", "JunkoMM_HD"}},
+          {DETECTIVES, {"Kirigiri_HD", "Shuichi Saihara_HD"}},
+          {NAEGI, {"Makoto_HD", "Komaru Naegi_HD"}},
+          {ALTEREGO, {"AlterEgo_HD", "Chihiro_HD"}},
+          {ALTEREGO, {"AlterEgo_HD", "Gonta AlterEgo_HD"}},
+          {ALTEREGO, {"Gonta Gokuhara_HD", "Gonta AlterEgo_HD"}},
+          {IMPOSTER, {"Byakuya_HD", "Byakuya2_HD"}},
+          {HAJIME, {"Hajime_HD", "Hajime Makuouchii_HD"}},
   };
 
 

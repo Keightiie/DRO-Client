@@ -96,8 +96,13 @@ QString AprilFoolsManager::RandomCharacter(QStringList t_characterList, bool t_u
     }
   }
 
-  int randomIndex = QRandomGenerator::global()->bounded(characterList.size());
-  return characterList[randomIndex];
+  if(characterList.size() != 0)
+  {
+    int randomIndex = QRandomGenerator::global()->bounded(characterList.size());
+    return characterList[randomIndex];
+  }
+
+  return "Makoto_HD";
 }
 
 bool AprilFoolsManager::isCharacterUnlocked(QString t_character)
@@ -114,6 +119,7 @@ void AprilFoolsManager::addMonocoins(int t_count)
 {
   m_MonocoinCount += t_count;
   updateMonocoinDisplay();
+  Save();
 }
 
 bool AprilFoolsManager::subtractMonocoins(int t_count)
@@ -121,6 +127,7 @@ bool AprilFoolsManager::subtractMonocoins(int t_count)
   if(m_MonocoinCount - t_count < 0) return false;
   m_MonocoinCount -= t_count;
   updateMonocoinDisplay();
+  Save();
   return true;
 }
 
@@ -170,6 +177,7 @@ void AprilFoolsManager::UnlockAchivement(AF24Achivements t_achivement)
     addMonocoins(10);
   }
   l_AOApp->m_courtroom->m_system_player->play(l_AOApp->get_sfx("achivement"));
+  Save();
 }
 
 void AprilFoolsManager::SetupAchivement(AchivementWidget *t_widget)

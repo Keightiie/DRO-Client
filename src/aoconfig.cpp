@@ -450,8 +450,8 @@ QString AOConfig::showname_placeholder() const
 
 QString AOConfig::character_ini(QString p_base_chr) const
 {
-  if (d->ini_map.contains(p_base_chr))
-    return d->ini_map[p_base_chr];
+  //if (d->ini_map.contains(p_base_chr))
+  //  return d->ini_map[p_base_chr];
   return p_base_chr;
 }
 
@@ -491,7 +491,7 @@ bool AOConfig::discord_hide_character() const
  */
 QString AOConfig::theme() const
 {
-  return "SDRO2-AF23";
+  return "SDRO2-AF24";
 }
 
 QString AOConfig::gamemode() const

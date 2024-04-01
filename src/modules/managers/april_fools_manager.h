@@ -51,13 +51,42 @@ public:
           {BESTIES, "Besties!"},
           {HEIGHT, "Height Difference"},
           {LUCKY, "Lucky!"},
-          {PAT, "PAT RECEIVER"}
+          {PAT, "PAT RECEIVER"},
+          {IMPOSTER, "Among Us"},
+          {HAJIME, "Hajime^2"},
+          {SISTERS, "Despair Sisters"},
+          {DETECTIVES, "Master Detectives"},
+          {ALTEREGO, "Alter Ego!"},
+          {ZOO, "Zoo"},
+          {MONOKUBS, "The Monokoubs"},
+          {NAEGI, "Average Siblings"}
   };
 
   QHash<AF24Achivements, QString> m_AchivementIcons =
   {
-    {WELCOME, "achivements/welcome.png"},
-    {PAT, "achivements/pat.png"},
+          {WELCOME, "achivements/welcome.png"},
+          {NEKU, "achivements/neku.png"},
+          {OTONOKOJI, "achivements/otonokoji.png"},
+          {KINDERGARDEN, "achivements/kindergarden.png"},
+          {PURCHASE,"achivements/purchase.png"},
+          {PROTAGPARTY, "achivements/protag.png"},
+          {RAINBOW, "achivements/rainbow.png"},
+          {AKANE, "achivements/akane.png"},
+          {LEON, "achivements/leon.png"},
+          {SEESAW, "achivements/seesaw.png"},
+          {JERM, "achivements/jerm.png"},
+          {BESTIES, "achivements/besties.png"},
+          {HEIGHT, "achivements/height.png"},
+          {LUCKY, "achivements/lucky.png"},
+          {PAT, "achivements/pat.png"},
+          {IMPOSTER, "achivements/imposter.png"},
+          {HAJIME, "achivements/hajime.png"},
+          {SISTERS, "achivements/sisters.png"},
+          {ALTEREGO, "achivements/alterego.png"},
+          {DETECTIVES, "achivements/detectives.png"},
+          {ZOO, "achivements/zoo.png"},
+          {MONOKUBS, "achivements/monokubs.png"},
+          {NAEGI, "achivements/naegi.png"}
   };
 
   template<typename T>
@@ -82,8 +111,15 @@ private:
           {KINDERGARDEN, {"Nagisa Shingetsu_HD", "Kotoko Utsugi_HD", "Jataro Kemuri_HD", "Monaca Towa_HD", "Masaru Daimon_HD"}},
           {NEKU, {"Neku Sakuraba_HD"}},
           {OTONOKOJI, {"Hibiki_HD", "Kanade_HD"}},
+          {SISTERS, {"Junko_HD", "JunkoMM_HD"}},
+          {SISTERS, {"Mukuro_HD", "JunkoMM_HD"}},
+          {NAEGI, {"Makoto_HD", "Komaru Naegi_HD"}},
           {HEIGHT, {"Ryoma Hoshi_HD", "Gonta Gokuhara_HD"}},
+          {DETECTIVES, {"Kirigiri_HD", "Shuichi Saihara_HD"}},
+          {ALTEREGO, {"AlterEgo_HD", "Gonta AlterEgo_HD"}},
           {LUCKY, {"Makoto_HD", "Nagito_HD"}},
+          {ZOO, {"Monotaro_HD", "Monosuke_HD", "Monodam_HD", "Monokid_HD", "Monophanie_HD"}},
+          {MONOKUBS, {"Monotaro_HD", "Monosuke_HD", "Monodam_HD", "Monokid_HD", "Monophanie_HD", "Monomi_HD", "Shirokuma_HD", "Kurokuma_HD", "Usami_HD", "Monocrow_HD", "Monokuma_HD", "MonokumaV3_HD"}}
   };
 
   AprilFoolsManager() {}

@@ -35,7 +35,7 @@ void AchivementWidget::SetAchivement(AF24Achivements t_achivement)
     p_AchivementIcon->set_theme_image("achivements/placeholder.png");
   }
   show();
-  QTimer::singleShot(2500, this, SLOT(AchivementDone()));
+  QTimer::singleShot(6000, this, SLOT(AchivementDone()));
 }
 
 void AchivementWidget::ThemeSetup()

@@ -1,5 +1,6 @@
 #include "aprilfoolsshop.h"
 #include "AOApplication.h"
+#include <QRandomGenerator>
 
 
 #include <modules/theme/thememanager.h>
@@ -53,14 +54,15 @@ void AprilFoolsShop::CreateStock(int x, int y)
 
 void AprilFoolsShop::RestockShop()
 {
-  AprilFoolsManager::get().addMonocoins(5);
+  int l_count = QRandomGenerator::global()->bounded(1, 6);
+  AprilFoolsManager::get().addMonocoins(l_count);
   for(ShopItemStock *l_stock : p_shopItems)
   {
     QString l_characterName = AprilFoolsManager::get().RandomCharacter(CharacterManager::get().GetServerCharacterNames(), true);
     l_stock->SetStock(Character, l_characterName);
   }
 
-  QTimer::singleShot(60000, this, SLOT(RestockShop()));
+  QTimer::singleShot(50000, this, SLOT(RestockShop()));
 
 
 }
