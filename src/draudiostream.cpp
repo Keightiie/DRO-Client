@@ -226,7 +226,11 @@ bool DRAudioStream::ensure_init()
 
   if(!m_url.isEmpty())
   {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 13)
+    l_hstream = BASS_StreamCreateURL(reinterpret_cast<const char*>(m_url.utf16()), 0, 0, nullptr, nullptr);
+#else
     l_hstream = BASS_StreamCreateURL(reinterpret_cast<const WCHAR*>(m_url.utf16()), 0, 0, nullptr, nullptr);
+#endif
   }
   else if (m_filename.isEmpty())
   {

@@ -8,8 +8,11 @@
 #include <modules/managers/audio_manager.h>
 #include <modules/managers/replay_manager.h>
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 13)
+#else
 #include <modules/networking/download_manager.h>
 #include <modules/networking/network_downloader.h>
+#endif
 
 ReplayScene::ReplayScene(AOApplication *p_ao_app, QWidget *parent) : QWidget(parent)
 {

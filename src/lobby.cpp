@@ -41,7 +41,10 @@
 
 #include <modules/managers/replay_manager.h>
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 13)
+#else
 #include <modules/networking/network_downloader.h>
+#endif
 
 Lobby::Lobby(AOApplication *p_ao_app)
     : QMainWindow()
