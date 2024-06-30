@@ -26,6 +26,14 @@
 
 #include <QGraphicsVideoItem>
 #include <QMediaPlayer>
+#include <QWidget>
+#include <QGraphicsProxyWidget>
+
+#include <VLCQtCore/Common.h>
+#include <VLCQtCore/Instance.h>
+#include <VLCQtCore/Media.h>
+#include <VLCQtCore/MediaPlayer.h>
+#include <VLCQtWidgets/WidgetVideo.h>
 
 class DRVideoScreen : public QGraphicsVideoItem
 {
@@ -36,6 +44,7 @@ public:
   ~DRVideoScreen();
 
   QString get_file_name() const;
+  QWidget *_widget;
 
 public slots:
   void set_file_name(QString file_name);
@@ -70,11 +79,24 @@ private:
 
   QMediaPlayer *m_player;
 
+  VlcInstance *_vlcInstance;
+  VlcMedia *_vlcMedia;
+  VlcMediaPlayer *_vlcPlayer;
+  VlcWidgetVideo *_vlcWidget;
+  QGraphicsProxyWidget *_widgetProxy;
+
   void start_playback();
 
   void finish_playback();
 
+  Vlc::State m_vlc_state;
+
 private slots:
+  // libvlc slots
+  void vlc_stateChanged();
+  void vlc_mediaChanged(libvlc_media_t* media);
+
+  // Qt Media Player slots
   void update_video_availability(bool);
 
   void check_status(QMediaPlayer::MediaStatus);

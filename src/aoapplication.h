@@ -41,6 +41,8 @@ public:
   AOApplication(int &argc, char **argv);
   ~AOApplication();
 
+  AOConfig *ao_config = nullptr;
+
   int get_client_id() const;
   void set_client_id(int id);
 
@@ -218,7 +220,6 @@ signals:
   void server_status_changed(ServerStatus);
 
 private:
-  AOConfig *ao_config = nullptr;
   AOConfigPanel *ao_config_panel = nullptr;
   DRDiscord *dr_discord = nullptr;
 

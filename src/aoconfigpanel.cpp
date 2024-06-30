@@ -175,6 +175,12 @@ AOConfigPanel::AOConfigPanel(AOApplication *p_ao_app, QWidget *p_parent)
       {ui_blip, ui_blip_value}
   };
 
+  // video
+  ui_video_backend_vlc = AO_GUI_WIDGET(QCheckBox, "video_backend_vlc");
+#ifdef Q_OS_MAC
+  // ui_video_backend_vlc->setDisabled(true);
+#endif
+
   // about
   ui_about = AO_GUI_WIDGET(QLabel, "about_label");
 
@@ -255,6 +261,9 @@ AOConfigPanel::AOConfigPanel(AOApplication *p_ao_app, QWidget *p_parent)
   connect(m_engine, SIGNAL(device_list_changed(QVector<DRAudioDevice>)), this, SLOT(on_audio_device_list_changed(QVector<DRAudioDevice>)));
   connect(m_engine, SIGNAL(favorite_device_changed(DRAudioDevice)), this, SLOT(on_favorite_audio_device_changed(DRAudioDevice)));
 
+  // video
+  connect(m_config, SIGNAL(video_backend_vlc_changed(bool)), ui_video_backend_vlc, SLOT(setChecked(bool)));
+
   // meta
   connect(ui_close, SIGNAL(clicked()), this, SLOT(close()));
   connect(ui_save, SIGNAL(clicked()), m_config, SLOT(save_file()));
@@ -332,6 +341,8 @@ AOConfigPanel::AOConfigPanel(AOApplication *p_ao_app, QWidget *p_parent)
   connect(ui_blip_rate, SIGNAL(valueChanged(int)), m_config, SLOT(set_blip_rate(int)));
   connect(ui_punctuation_delay, SIGNAL(valueChanged(int)), m_config, SLOT(set_punctuation_delay(int)));
   connect(ui_blank_blips, SIGNAL(toggled(bool)), m_config, SLOT(set_blank_blips(bool)));
+
+  connect(ui_video_backend_vlc, &QAbstractButton::toggled, m_config, &AOConfig::set_video_backend_vlc);
 
   connect(ui_theme_resize, SIGNAL(valueChanged(double)), m_config, SLOT(setThemeResize(double)));
   connect(ui_fade_duration, SIGNAL(valueChanged(int)), m_config, SLOT(setFadeDuration(int)));
@@ -426,6 +437,8 @@ AOConfigPanel::AOConfigPanel(AOApplication *p_ao_app, QWidget *p_parent)
   ui_blip_rate->setValue(m_config->blip_rate());
   ui_punctuation_delay->setValue(m_config->punctuation_delay());
   ui_blank_blips->setChecked(m_config->blank_blips_enabled());
+
+  ui_video_backend_vlc->setChecked(m_config->video_backend_vlc());
 
   ui_theme_resize->setValue(m_config->theme_resize());
   ui_fade_duration->setValue(m_config->fade_duration());

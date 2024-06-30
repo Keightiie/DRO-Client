@@ -296,3 +296,8 @@ FORMS += \
 # Mac stuff
 QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
 ICON = icon.icns
+
+macx {
+LIBS += -F$$PWD/3rd/ -framework VLCQtCore -framework VLCQtWidgets
+QMAKE_APPLE_DEVICE_ARCHS = x86_64
+}

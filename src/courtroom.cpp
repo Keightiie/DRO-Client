@@ -75,6 +75,7 @@ Courtroom::Courtroom(AOApplication *p_ao_app, QWidget *parent)
 {
   ao_app = p_ao_app;
   ao_config = new AOConfig(this);
+  ao_app->m_courtroom = this;
 
   m_preloader_sync = new mk2::SpriteReaderSynchronizer(this);
   m_preloader_sync->set_threshold(ao_config->caching_threshold());
@@ -102,7 +103,7 @@ Courtroom::Courtroom(AOApplication *p_ao_app, QWidget *parent)
   set_char_select();
   load_audiotracks();
   reset_viewport();
-  PairManager::get().SetUserPair(-1, 480);
+  PairManager::get().SetUserPair(-1, 480);  
 }
 
 Courtroom::~Courtroom()
@@ -815,6 +816,11 @@ void Courtroom::on_pair_offset_changed()
 bool Courtroom::is_spectating()
 {
   return m_chr_id == SpectatorId;
+}
+
+QRect Courtroom::get_video_rect()
+{
+  return ui_viewport->geometry();
 }
 
 void Courtroom::on_showname_placeholder_changed(QString p_showname_placeholder)
