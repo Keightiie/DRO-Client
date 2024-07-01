@@ -22,8 +22,8 @@ void ThemeManager::CreateTabWidgets()
     QString l_buttonName = r_tabInfo.m_Name + "_toggle";
     QString l_panelName = r_tabInfo.m_Name + "_panel";
 
-    pos_size_type l_panelPosition = mCurrentThemeReader.GetWidgetTransform(COURTROOM, l_panelName);
-    pos_size_type l_buttonDimensions = mCurrentThemeReader.GetWidgetTransform(COURTROOM, l_buttonName);
+    pos_size_type l_panelPosition = mCurrentThemeReader.GetWidgetTransform(SceneTypeCourtroom, l_panelName);
+    pos_size_type l_buttonDimensions = mCurrentThemeReader.GetWidgetTransform(SceneTypeCourtroom, l_buttonName);
 
 
     l_newTab->move(l_panelPosition.x, l_panelPosition.y);
@@ -347,7 +347,7 @@ AOButton *ThemeManager::CreateWidgetButton(ThemeSceneType t_scene, QString t_nam
 AOImageDisplay *ThemeManager::CreateWidgetImageDisplay(QString t_name, QString t_image, bool visible, QWidget *t_parent)
 {
   AOImageDisplay *l_image = new AOImageDisplay(t_parent, AOApplication::getInstance());
-  AutoAdjustWidgetDimensions(l_image, t_name, REPLAYS);
+  AutoAdjustWidgetDimensions(l_image, t_name, SceneTypeReplays);
   RegisterWidgetGeneric(t_name, l_image);
   l_image->set_theme_image(AOApplication::getInstance()->current_theme->get_widget_image(t_name, t_image, "replays"));
 

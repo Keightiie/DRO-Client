@@ -24,6 +24,7 @@ public:
   void RecordChangeBackground(QString t_bgn);
   void RecordMessageIC(ICMessageData *m_Message);
   void RecordMessageOOC(QString t_name, QString t_message);
+  void RecordPlaySplash(QString t_splash);
   void RecordChangeWeather(QString t_weather);
   void RecordChangeGamemode(QString t_gamemode);
   void RecordChangeHour(QString t_hour);

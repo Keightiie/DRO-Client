@@ -34,15 +34,15 @@ void Courtroom::construct_char_select()
   ui_char_button_selector->setAttribute(Qt::WA_TransparentForMouseEvents);
   ui_char_button_selector->resize(62, 62);
 
-  ui_back_to_lobby = ThemeManager::get().CreateWidgetButton(COURTROOM, "back_to_lobby", "lobby_return.png", LocalizationManager::get().getLocalizationText("CSS_DISCONNECT"), ui_char_select_background);
+  ui_back_to_lobby = ThemeManager::get().CreateWidgetButton(SceneTypeCourtroom, "back_to_lobby", "lobby_return.png", LocalizationManager::get().getLocalizationText("CSS_DISCONNECT"), ui_char_select_background);
 
-  ui_chr_select_left = ThemeManager::get().CreateWidgetButton(COURTROOM, "char_select_left", "arrow_left.png", "", ui_char_select_background);
-  ui_chr_select_right = ThemeManager::get().CreateWidgetButton(COURTROOM, "char_select_right", "arrow_right.png", "", ui_char_select_background);
+  ui_chr_select_left = ThemeManager::get().CreateWidgetButton(SceneTypeCourtroom, "char_select_left", "arrow_left.png", "", ui_char_select_background);
+  ui_chr_select_right = ThemeManager::get().CreateWidgetButton(SceneTypeCourtroom, "char_select_right", "arrow_right.png", "", ui_char_select_background);
 
-  ui_spectator = ThemeManager::get().CreateWidgetButton(COURTROOM, "spectator", "spectator.png", LocalizationManager::get().getLocalizationText("CSS_SPECTATE"), ui_char_select_background);
+  ui_spectator = ThemeManager::get().CreateWidgetButton(SceneTypeCourtroom, "spectator", "spectator.png", LocalizationManager::get().getLocalizationText("CSS_SPECTATE"), ui_char_select_background);
 
-  pBtnCharSelectRandom = ThemeManager::get().CreateWidgetButton(COURTROOM, "char_select_random", "char_random.png", LocalizationManager::get().getLocalizationText("CSS_RANDOM"), ui_char_select_background);
-  pBtnCharSelectRefresh = ThemeManager::get().CreateWidgetButton(COURTROOM, "char_select_refresh", "char_refresh.png", LocalizationManager::get().getLocalizationText("REFRESH"), ui_char_select_background);
+  pBtnCharSelectRandom = ThemeManager::get().CreateWidgetButton(SceneTypeCourtroom, "char_select_random", "char_random.png", LocalizationManager::get().getLocalizationText("CSS_RANDOM"), ui_char_select_background);
+  pBtnCharSelectRefresh = ThemeManager::get().CreateWidgetButton(SceneTypeCourtroom, "char_select_refresh", "char_refresh.png", LocalizationManager::get().getLocalizationText("REFRESH"), ui_char_select_background);
 
   pCharaSelectSearch = setupLineEditWidget("character_search", LocalizationManager::get().getLocalizationText("CSS_SEARCH"), "[CHARA SEARCH]", "", ui_char_select_background);
   pCharaSelectSeries = setupComboBoxWidget(CharacterManager::get().GetCharacterPackages() , "character_packages", "[PACKAGE FILTER]");

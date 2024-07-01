@@ -22,6 +22,7 @@ void ThemeModuleReader::ParseModule()
   m_CourtroomScene = ParseScene("courtroom");
   m_LobbyScene = ParseScene("lobby");
   m_ReplaysScene = ParseScene("replays");
+  m_ViewportScene = ParseScene("viewport");
   ParseLayers();
   ParseTabs();
 }
@@ -149,6 +150,8 @@ ThemeScene *ThemeModuleReader::ParseScene(QString t_scene)
       widgetTransform.x = obj["position"].toObject()["x"].toInt(); widgetTransform.y = obj["position"].toObject()["y"].toInt();
       widgetTransform.width = obj["position"].toObject()["width"].toInt(); widgetTransform.height = obj["position"].toObject()["height"].toInt();
       newScene->setWidgetTransform(key, widgetTransform);
+
+      newScene->setWidgetRotation(key, obj["position"].toObject()["rotation"].toDouble());
     }
 
     if(obj.contains("settings"))
@@ -235,14 +238,17 @@ ThemeScene *ThemeModuleReader::getThemeScene(ThemeSceneType t_scene)
 {
   switch (t_scene)
   {
-    case LOBBY:
+    case SceneTypeLobby:
       return m_LobbyScene;
 
-    case REPLAYS:
+    case SceneTypeReplays:
       return m_ReplaysScene;
 
-    case COURTROOM:
+    case SceneTypeCourtroom:
       return m_CourtroomScene;
+
+    case SceneTypeViewport:
+      return m_ViewportScene;
 
     default:
       return nullptr;

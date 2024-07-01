@@ -10,6 +10,7 @@ GameManager GameManager::s_Instance;
 void GameManager::StartGameLoop()
 {
   StopGameLoop();
+
   ReplayManager::get().RecordingStart();
   connect(&m_FrameTimer, &QTimer::timeout, this, &GameManager::RunGameLoop);
   m_FrameTimer.setInterval(1000 / m_FramesPerSecond);
@@ -37,7 +38,30 @@ void GameManager::SetAnimationGroup(AnimTypes t_type, QVector<GraphicObjectAnima
   m_GraphicObjectAnimations[t_type] = t_animations;
 }
 
-void GameManager::RunAnimationLoop(AnimTypes t_type)
+void GameManager::UpdateAnimationLoop(AnimTypes t_type)
+{
+  if(m_GraphicObjectAnimations.contains(t_type))
+  {
+    bool l_AnimationQueueComplete = true;
+    for(GraphicObjectAnimator * r_anim : m_GraphicObjectAnimations[t_type])
+    {
+      if(r_anim->getAnimation()->GetCurrentlyRunning())
+      {
+        l_AnimationQueueComplete = false;
+        r_anim->getAnimation()->RunAnimation();
+      }
+    }
+
+    if(l_AnimationQueueComplete)
+    {
+      m_GraphicObjectAnimations[t_type] = {};
+      if(t_type == eAnimationShout) emit ShoutComplete();
+      if(t_type == eAnimationGM) emit JudgeComplete();
+    }
+  }
+}
+
+void GameManager::RenderAnimationLoop(AnimTypes t_type)
 {
   if(m_WidgetTypeWriter != nullptr)
   {
@@ -46,7 +70,7 @@ void GameManager::RunAnimationLoop(AnimTypes t_type)
       m_WidgetTypeWriter->UpdateDisplay();
     }
   }
-  if(m_GraphicObjectAnimations.contains(t_type))
+  if(!m_GraphicObjectAnimations[t_type].empty())
   {
     bool lAllAnimationsDone = true;
     for(GraphicObjectAnimator * r_anim : m_GraphicObjectAnimations[t_type])
@@ -68,29 +92,14 @@ void GameManager::RunAnimationLoop(AnimTypes t_type)
   }
 }
 
-GameEffectData GameManager::getEffect(QString t_name)
-{
-  for(GameEffectData rEffectData : m_GameEffects)
-  {
-    if(t_name == rEffectData.mName) return rEffectData;
-  }
 
-  return GameEffectData("<NONE>");
-}
 
-GameEffectData GameManager::getEffect(int t_id)
-{
-  for(GameEffectData rEffectData : m_GameEffects)
-  {
-    if(t_id == rEffectData.mLegacyId) return rEffectData;
-  }
 
-  return GameEffectData("<NONE>");
-}
 
 void GameManager::setupGame()
 {
   setupGameEffects();
+  setupGameShouts();
   StartGameLoop();
   AudioManager::get().InitializeAudio();
 }
@@ -124,6 +133,23 @@ void GameManager::setupGameEffects()
   }
 }
 
+void GameManager::setupGameShouts()
+{
+  JSONReader l_ShoutsReader = JSONReader();
+  l_ShoutsReader.ReadFromFile(PathingManager::get().getBasePath() +  "shouts/default/shouts.json");
+
+  m_GameShouts = {};
+
+  QJsonArray l_ShoutsArray = l_ShoutsReader.mDocument.array();
+  for(QJsonValueRef r_shout : l_ShoutsArray)
+  {
+    l_ShoutsReader.SetTargetObject(r_shout.toObject());
+    GameShoutData l_ShoutData = GameShoutData(l_ShoutsReader.getStringValue("shout_name"));
+    l_ShoutData.mLegacyId = l_ShoutsReader.getIntValue("id");
+    m_GameShouts.append(l_ShoutData);
+  }
+}
+
 int GameManager::getUptime()
 {
   return m_GameUptime;
@@ -142,8 +168,8 @@ void GameManager::RunGameLoop()
       m_PlayerAnimation->updateAnimation();
     }
 
-    RunAnimationLoop(eAnimationShout);
-    RunAnimationLoop(eAnimationGM);
+    RenderAnimationLoop(eAnimationShout);
+    RenderAnimationLoop(eAnimationGM);
 
 
     m_IsUpdateRunning = false;

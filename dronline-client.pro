@@ -111,10 +111,13 @@ HEADERS += \
   src/modules/managers/pair_manager.h \
   src/modules/managers/pathing_manager.h \
   src/modules/managers/replay_manager.h \
+  src/modules/managers/scenario_manager.h \
   src/modules/managers/scene_manager.h \
   src/modules/managers/variable_manager.h \
   src/modules/networking/json_packet.h \
   src/modules/scenes/replay_scene.h \
+  src/modules/scenes/scenetestinglabs.h \
+  src/modules/scenes/viewport_scene.h \
   src/modules/theme/droanimation.h \
   src/modules/theme/graphicobjectanimator.h \
   src/modules/theme/theme_scene.h \
@@ -131,6 +134,7 @@ HEADERS += \
   src/modules/widgets/keyframe_player.h \
   src/modules/widgets/rpnotifymenu.h \
   src/modules/widgets/tabgroupingwidget.h \
+  src/modules/widgets/taggablelineedit.h \
   src/modules/widgets/typewritertextedit.h \
   src/modules/widgets/viewport_overlay.h \
   src/theme.h \
@@ -241,10 +245,13 @@ SOURCES += \
   src/modules/managers/pair_manager.cpp \
   src/modules/managers/pathing_manager.cpp \
   src/modules/managers/replay_manager.cpp \
+  src/modules/managers/scenario_manager.cpp \
   src/modules/managers/scene_manager.cpp \
   src/modules/managers/variable_manager.cpp \
   src/modules/networking/json_packet.cpp \
   src/modules/scenes/replay_scene.cpp \
+  src/modules/scenes/scenetestinglabs.cpp \
+  src/modules/scenes/viewport_scene.cpp \
   src/modules/theme/droanimation.cpp \
   src/modules/theme/graphicobjectanimator.cpp \
   src/modules/theme/theme_scene.cpp \
@@ -261,6 +268,7 @@ SOURCES += \
   src/modules/widgets/keyframe_player.cpp \
   src/modules/widgets/rpnotifymenu.cpp \
   src/modules/widgets/tabgroupingwidget.cpp \
+  src/modules/widgets/taggablelineedit.cpp \
   src/modules/widgets/typewritertextedit.cpp \
   src/modules/widgets/viewport_overlay.cpp \
   src/path_functions.cpp \

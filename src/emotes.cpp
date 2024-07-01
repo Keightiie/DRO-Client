@@ -30,8 +30,8 @@ void Courtroom::construct_emotes()
   ui_emotes = new DROEmoteButtons(this);
   EmotionManager::get().setEmotesPanel(ui_emotes);
 
-  ui_emote_left = ThemeManager::get().CreateWidgetButton(COURTROOM, "emote_left", "arrow_left.png", "", this);
-  ui_emote_right = ThemeManager::get().CreateWidgetButton(COURTROOM, "emote_right", "arrow_right.png", "", this);
+  ui_emote_left = ThemeManager::get().CreateWidgetButton(SceneTypeCourtroom, "emote_left", "arrow_left.png", "", this);
+  ui_emote_right = ThemeManager::get().CreateWidgetButton(SceneTypeCourtroom, "emote_right", "arrow_right.png", "", this);
 
   ui_emote_preview = new DRGraphicsView(nullptr);
   ui_emote_preview->setWindowFlags(Qt::ToolTip | Qt::FramelessWindowHint | Qt::BypassGraphicsProxyWidget);

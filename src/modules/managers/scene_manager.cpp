@@ -11,6 +11,13 @@
 
 SceneManager SceneManager::s_Instance;
 
+SceneTestingLabs *SceneManager::SceneConstructTestingLabs()
+{
+  m_SceneTestingLabs = new SceneTestingLabs();
+  m_SceneTestingLabs->show();
+  return m_SceneTestingLabs;
+}
+
 ICMessageData *SceneManager::ProcessIncomingMessage(QStringList t_message)
 {
   if(m_CurrentMessageData != nullptr) delete m_CurrentMessageData;
@@ -188,6 +195,7 @@ ICMessageData::ICMessageData(QStringList t_messageData, bool t_legacy)
     m_SFXDelay = t_messageData[eMsSoundDelay].toInt();
     m_TextColor = t_messageData[eMsTextColour].toInt();
     m_ShoutModifier = t_messageData[eMsShout].toInt();
+    m_ShoutName = GameManager::get().getShoutName(m_ShoutModifier);
     m_EffectState = t_messageData[eMsEffects].toInt();
     m_EffectData = GameManager::get().getEffect(m_EffectState);
     m_KeyframeAnimation = t_messageData[eMsAnimation];
@@ -232,6 +240,7 @@ ICMessageData::ICMessageData(QStringList t_messageData, bool t_legacy)
     m_CharacterServerId = t_messageData[CMChrId].toInt();
     m_SFXDelay = t_messageData[CMSoundDelay].toInt();
     m_ShoutModifier = t_messageData[CMShoutModifier].toInt();
+    m_ShoutName = GameManager::get().getShoutName(m_ShoutModifier);
     m_EvidenceId = t_messageData[CMEvidenceId].toInt();
 
     m_IsFlipped = t_messageData[CMFlipState] == "1";

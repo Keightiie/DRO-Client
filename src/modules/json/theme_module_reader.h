@@ -54,6 +54,7 @@ private:
   ThemeScene *m_CourtroomScene = nullptr;
   ThemeScene *m_LobbyScene = nullptr;
   ThemeScene *m_ReplaysScene = nullptr;
+  ThemeScene *m_ViewportScene = nullptr;
 
   //Other
   QHash<QString, widgetFontStruct*> m_ChatlogColours = {};

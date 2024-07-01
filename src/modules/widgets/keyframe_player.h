@@ -23,6 +23,8 @@ public slots:
   void animationComplete();
 
 signals:
+  void SplashAnimationFinished();
+  void ShoutAnimationFinished();
   void animationFinished();
 
 private:

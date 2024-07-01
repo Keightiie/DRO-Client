@@ -1023,7 +1023,7 @@ void Courtroom::next_chatmessage(QStringList p_chatmessage)
 
 
   m_CurrentMessageData = SceneManager::get().ProcessIncomingMessage(p_chatmessage);
-
+  if(m_ViewportVerTwo != nullptr) m_ViewportVerTwo->ProcessIncomingMessage(m_CurrentMessageData);
   const int l_message_chr_id = m_CurrentMessageData->m_CharacterServerId;
   const bool l_system_speaking = l_message_chr_id == SpectatorId;
 
@@ -1870,7 +1870,7 @@ void Courtroom::setup_chat()
   if(ao_app->current_theme->m_jsonLoaded)
   {
 
-    m_chatbox_message_outline = ThemeManager::get().mCurrentThemeReader.GetFontData(COURTROOM, "message").outline;
+    m_chatbox_message_outline = ThemeManager::get().mCurrentThemeReader.GetFontData(SceneTypeCourtroom, "message").outline;
   }
   else
   {
@@ -2218,6 +2218,10 @@ void Courtroom::handle_wtce(QString p_wtce)
     if (p_wtce == "testimony")
     {
       m_effects_player->play_effect(ao_app->get_sfx(wtce_names[index - 1]));
+
+      ReplayManager::get().RecordPlaySplash(wtce_names[index - 1]);
+
+      if(m_ViewportVerTwo != nullptr) m_ViewportVerTwo->PlaySplashAnimation(wtce_names[index - 1]);
 
       if(!wShoutsLayer->playAnimation(wtce_names[index - 1], eAnimationGM))
       {
@@ -3273,7 +3277,7 @@ void Courtroom::write_area_desc()
 
   if(ao_app->current_theme->m_jsonLoaded)
   {
-    widgetFontStruct fontstruct = ThemeManager::get().mCurrentThemeReader.GetFontData(COURTROOM, "area_desc");
+    widgetFontStruct fontstruct = ThemeManager::get().mCurrentThemeReader.GetFontData(SceneTypeCourtroom, "area_desc");
     l_color = fontstruct.color;
     is_bold = fontstruct.bold;
   }

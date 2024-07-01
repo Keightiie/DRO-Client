@@ -37,13 +37,7 @@ public:
   QHash<QString, dialogueHighlights>GetFontColorsHighlights();
   QMap<QString, DR::ColorInfo>GetFontColorsDefault();
 
-  bool ContainsSoundName(QString setting);
-  QString GetSoundName(QString setting);
-
   //Data Retrieval
-  bool ContainsConfigToggle(QString setting);
-  bool GetConfigToggle(QString setting);
-
   QVector2D getWidgetSpacing(QString widget_name);
   int getMusicScrollSpeed();
   int getTimerNumber();

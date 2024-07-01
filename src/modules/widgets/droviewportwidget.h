@@ -9,10 +9,13 @@
 #include <QWidget>
 #include <drgraphicscene.h>
 #include <drshoutmovie.h>
+#include "modules/managers/scenario_manager.h"
+#include "keyframe_player.h"
+#include "typewritertextedit.h"
 
 #include <mk2/graphicsvideoscreen.h>
 
-#include <modules/managers/scene_manager.h>
+#include <aolabel.h>
 
 class DROViewportWidget : public DRGraphicsView
 {
@@ -22,19 +25,43 @@ public:
   void ConstructViewport(ThemeSceneType t_scene);
   void ProcessIncomingMessage(ICMessageData *t_IncomingMessage);
 
+  void TransitionRender();
+  void TransitionAnimate();
+
+  //
+  void ConstructUserInterface();
+  void ConstructText();
+  void PlayShoutAnimation(QString t_name);
+  void ToggleChatbox(bool t_state);
+
+  //
+  void PlaySplashAnimation(QString t_name);
+
   //Visual Updates
   void UpdateBackground(QString t_position = "wit");
+
+  AOApplication *m_AOApp = nullptr;
 
 signals:
   void VideoDone();
   void PreanimDone();
 
 public slots:
+  void OnObjectionDone();
   void OnVideoDone();
   void OnPreanimDone();
 
 private:
-  AOApplication *m_AOApp = nullptr;
+
+  DRGraphicsView *m_UserInterface = nullptr;
+  KeyframePlayer *m_ShoutsPlayer = nullptr;
+
+  //User Interface
+  QMap<QString, DRSceneMovie*> m_UserInterfaceObjects = {};
+
+  TypewriterTextEdit *m_TextMessage = nullptr;
+  DRTextEdit *m_TextShowname = nullptr;
+
 
   //Data
   ICMessageData *m_IncomingMessage = nullptr;
@@ -49,6 +76,9 @@ private:
   DRShoutMovie *m_VpShouts = nullptr;
   DRVideoScreen *m_VpVideo = nullptr;
 
+  //Transition
+  AOLabel *m_WidgetTransition = nullptr;
+  int m_FadeDuration = 500;
 };
 
 #endif // DROVIEWPORTWIDGET_H

@@ -100,5 +100,13 @@ void KeyframePlayer::animationComplete()
 {
   mFrameTimer.stop();
   clearAniamtions();
+  if(mAnimType == eAnimationShout)
+  {
+    emit ShoutAnimationFinished();
+  }
+  if(mAnimType == eAnimationGM)
+  {
+    emit SplashAnimationFinished();
+  }
   emit animationFinished();
 }

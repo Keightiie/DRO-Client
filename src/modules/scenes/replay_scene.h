@@ -17,6 +17,7 @@
 #include "modules/widgets/typewritertextedit.h"
 #include <mk2/graphicsvideoscreen.h>
 #include <modules/widgets/droviewportwidget.h>
+#include "modules/scenes/viewport_scene.h"
 
 class ReplayScene : public QWidget
 {
@@ -27,9 +28,9 @@ public:
 
 
   void playSong(QString t_song);
-  void setText(QString t_dialogue);
   void setMsgOperation(QMap<QString, QString> t_vars);
   void setBackground(QString t_name);
+  void playWTCE(QString t_name);
 
 
   void SetupReplayMetadata(int t_operationsCount);
@@ -52,11 +53,9 @@ protected:
 
 private:
   //Viewport
-  DROViewportWidget *m_Viewport = nullptr;
+  ViewportScene *m_Viewport = nullptr;
 
   DRTextEdit *vpShowname = nullptr;
-  TypewriterTextEdit *vpMessage = nullptr;
-  DRTextEdit *vpMessageShowname = nullptr;
   QSlider *m_PlaybackScrubber = nullptr;
 
   //To Be Moved

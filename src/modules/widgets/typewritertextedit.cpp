@@ -62,8 +62,6 @@ void TypewriterTextEdit::setTypewriterTarget(QString t_text)
     l_ignoreNextLetter = false;
   }
   UpdateDisplay();
-  UpdateDisplay();
-  UpdateDisplay();
 }
 
 void TypewriterTextEdit::UpdateDisplay()
@@ -131,8 +129,6 @@ void TypewriterTextEdit::UpdateDisplay()
         return;
       }
     }
-
-
   }
 
   textCursor().insertText(l_newChar, l_currentCharFormat);

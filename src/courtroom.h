@@ -443,6 +443,8 @@ private:
   DRVideoScreen *ui_video = nullptr;
   DRSceneMovie *ui_vp_background = nullptr;
 
+  DROViewportWidget *m_ViewportVerTwo = nullptr;
+
   GraphicObjectAnimator *aniPlayerChar = nullptr;
   DRCharacterMovie *ui_vp_player_char = nullptr;
   DRCharacterMovie *ui_vp_player_pair = nullptr;

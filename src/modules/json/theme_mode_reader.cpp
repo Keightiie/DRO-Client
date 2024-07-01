@@ -147,7 +147,7 @@ void ThemeModeReader::SetTimeOfDay(QString time)
 QColor ThemeModeReader::getChatlogColour(QString t_type)
 {
 
-  QVector<ThemeScene*> loadOrder = getSceneLoadOrder(COURTROOM);
+  QVector<ThemeScene*> loadOrder = getSceneLoadOrder(SceneTypeCourtroom);
   for(ThemeScene * scene : loadOrder)
   {
     if(scene->containsChatlogColor(t_type))
@@ -161,7 +161,7 @@ QColor ThemeModeReader::getChatlogColour(QString t_type)
 
 bool ThemeModeReader::getChatlogBool(QString t_type)
 {
-  QVector<ThemeScene*> loadOrder = getSceneLoadOrder(COURTROOM);
+  QVector<ThemeScene*> loadOrder = getSceneLoadOrder(SceneTypeCourtroom);
   for(ThemeScene * scene : loadOrder)
   {
     if(scene->containsChatlogBold(t_type)) return scene->getChatlogBold(t_type);
@@ -171,7 +171,7 @@ bool ThemeModeReader::getChatlogBool(QString t_type)
 
 bool ThemeModeReader::getContainsChatlogColour(QString t_type)
 {
-  QVector<ThemeScene*> loadOrder = getSceneLoadOrder(COURTROOM);
+  QVector<ThemeScene*> loadOrder = getSceneLoadOrder(SceneTypeCourtroom);
   for(ThemeScene * scene : loadOrder)
   {
     if(scene->containsChatlogColor(t_type)) return true;
@@ -181,7 +181,7 @@ bool ThemeModeReader::getContainsChatlogColour(QString t_type)
 
 bool ThemeModeReader::getContainsChatlogBool(QString t_type)
 {
-  QVector<ThemeScene*> loadOrder = getSceneLoadOrder(COURTROOM);
+  QVector<ThemeScene*> loadOrder = getSceneLoadOrder(SceneTypeCourtroom);
   for(ThemeScene * scene : loadOrder)
   {
     if(scene->containsChatlogBold(t_type)) return true;
@@ -249,58 +249,9 @@ QMap<QString, DR::ColorInfo> ThemeModeReader::GetFontColorsDefault()
   return returnValue;
 }
 
-bool ThemeModeReader::ContainsSoundName(QString t_soundName)
-{
-  QVector<ThemeModuleReader *> modulesList = getModuleLoadOrder();
-  for(ThemeModuleReader * module : modulesList)
-  {
-    if(module == nullptr) continue;
-    if(module->getContainsSound(t_soundName)) return true;
-  }
-  return false;
-}
-
-QString ThemeModeReader::GetSoundName(QString t_soundName)
-{
-  QVector<ThemeModuleReader *> modulesList = getModuleLoadOrder();
-
-  for(ThemeModuleReader * module : modulesList)
-  {
-    if(module == nullptr) continue;
-    if(module->getContainsSound(t_soundName)) return module->getSoundFile(t_soundName);
-  }
-
-  return "";
-}
-
-bool ThemeModeReader::ContainsConfigToggle(QString t_setting)
-{
-  QVector<ThemeModuleReader *> modulesList = getModuleLoadOrder();
-  for(ThemeModuleReader * module : modulesList)
-  {
-    if(module == nullptr) continue;
-    if(module->getContainsBool(t_setting)) return true;
-  }
-  return false;
-}
-
-bool ThemeModeReader::GetConfigToggle(QString t_setting)
-{
-
-  QVector<ThemeModuleReader *> modulesList = getModuleLoadOrder();
-
-  for(ThemeModuleReader * module : modulesList)
-  {
-    if(module == nullptr) continue;
-    if(module->getContainsBool(t_setting)) return module->getSettingBool(t_setting);
-  }
-
-  return false;
-}
-
 QVector2D ThemeModeReader::getWidgetSpacing(QString t_name)
 {
-  QVector<ThemeScene*> readOrder = getSceneLoadOrder(COURTROOM);
+  QVector<ThemeScene*> readOrder = getSceneLoadOrder(SceneTypeCourtroom);
 
   for (ThemeScene *scene : readOrder)
   {
@@ -344,8 +295,11 @@ bool ThemeModeReader::containsWidgetPosition(ThemeSceneType sceneType, QString n
 {
   if(m_TimeOfDayCurrent != nullptr)
   {
-    bool l_timeHasWidget = m_TimeOfDayCurrent->m_GamemodeModule->getContainsSceneWidget(sceneType, name);
-    if(l_timeHasWidget) return true;
+    if(m_TimeOfDayCurrent->m_GamemodeModule != nullptr)
+    {
+      bool l_timeHasWidget = m_TimeOfDayCurrent->m_GamemodeModule->getContainsSceneWidget(sceneType, name);
+      if(l_timeHasWidget) return true;
+    }
   }
 
   for(QString module : m_ModuleNames)
@@ -357,7 +311,9 @@ bool ThemeModeReader::containsWidgetPosition(ThemeSceneType sceneType, QString n
     }
   }
 
-  return m_GamemodeModule->getContainsSceneWidget(sceneType, name);
+  if(m_GamemodeModule != nullptr) return m_GamemodeModule->getContainsSceneWidget(sceneType, name);
+
+  return false;
 }
 
 pos_size_type ThemeModeReader::getWidgetPosition(ThemeSceneType sceneType, QString name)

@@ -220,11 +220,11 @@ pos_size_type DRTheme::get_element_dimensions(QString p_identifier, QString p_sc
 {
   if(p_scene == "courtroom")
   {
-    return ThemeManager::get().mCurrentThemeReader.GetWidgetTransform(COURTROOM, p_identifier);
+    return ThemeManager::get().mCurrentThemeReader.GetWidgetTransform(SceneTypeCourtroom, p_identifier);
   }
   else
   {
-    return ThemeManager::get().mCurrentThemeReader.GetWidgetTransform(LOBBY, p_identifier);
+    return ThemeManager::get().mCurrentThemeReader.GetWidgetTransform(SceneTypeLobby, p_identifier);
   }
 
 }
@@ -257,8 +257,8 @@ QString DRTheme::get_widget_font_string_setting(QString p_identifier, QString p_
     return ao_app->read_theme_ini(fallback, p_scene);
   }
 
-  ThemeSceneType sceneType = COURTROOM;
-  if(p_scene == LOBBY_FONTS_INI) sceneType = LOBBY;
+  ThemeSceneType sceneType = SceneTypeCourtroom;
+  if(p_scene == LOBBY_FONTS_INI) sceneType = SceneTypeLobby;
   return ThemeManager::get().mCurrentThemeReader.GetFontData(sceneType, p_identifier).align;
 }
 

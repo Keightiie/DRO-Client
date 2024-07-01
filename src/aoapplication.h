@@ -20,6 +20,7 @@ class Lobby;
 #include <optional>
 
 
+
 class AOApplication : public QApplication
 {
   Q_OBJECT
@@ -225,6 +226,8 @@ private:
 
   DRServerSocket *m_server_socket = nullptr;
   ServerStatus m_server_status = NotConnected;
+
+  bool isTestingLabsConstructed = false;
 
   Lobby *m_lobby = nullptr;
   bool is_lobby_constructed = false;

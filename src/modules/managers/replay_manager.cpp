@@ -99,7 +99,7 @@ void ReplayManager::RecordMessageIC(ICMessageData *m_Message)
   lNewOperation.mVariables["hide"] = QString::number(m_Message->m_HideCharacter);
   lNewOperation.mVariables["flip"] = QString::number(m_Message->m_IsFlipped);
   lNewOperation.mVariables["effect"] = m_Message->m_EffectData.mName;
-  lNewOperation.mVariables["shout"] = QString::number(m_Message->m_ShoutModifier);
+  lNewOperation.mVariables["shout"] = m_Message->m_ShoutName;
   m_ReplayOperationsRecorded.append(lNewOperation);
   RecordingSave();
 }
@@ -110,6 +110,15 @@ void ReplayManager::RecordMessageOOC(QString t_name, QString t_message)
   lNewOperation.mTimestamp = m_TimerRecorder.elapsed();
   lNewOperation.mVariables["name"] = t_name;
   lNewOperation.mVariables["msg"] = t_message;
+  m_ReplayOperationsRecorded.append(lNewOperation);
+  RecordingSave();
+}
+
+void ReplayManager::RecordPlaySplash(QString t_splash)
+{
+  ReplayOperation lNewOperation = ReplayOperation("wtce");
+  lNewOperation.mTimestamp = m_TimerRecorder.elapsed();
+  lNewOperation.mVariables["name"] = t_splash;
   m_ReplayOperationsRecorded.append(lNewOperation);
   RecordingSave();
 }
@@ -211,12 +220,17 @@ void ReplayManager::PlaybackProgressManual()
       p_SceneReplay->setBackground(m_ReplayOperationsPlayback[m_PlaybackPositionIndex].mVariables["name"]);
     }
 
+    if(mOp == "wtce")
+    {
+      p_SceneReplay->playWTCE(m_ReplayOperationsPlayback[m_PlaybackPositionIndex].mVariables["name"]);
+    }
+
     if(mOp == "bgm")
     {
       p_SceneReplay->playSong(m_ReplayOperationsPlayback[m_PlaybackPositionIndex].mVariables["track"]);
     }
 
-    if(mOp != "msg") PlaybackProgressManual();
+    if(mOp != "msg" && mOp != "wtce") PlaybackProgressManual();
   }
 
 }

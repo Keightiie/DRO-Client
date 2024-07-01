@@ -2,11 +2,6 @@
 #include "aoapplication.h"
 #include <QRegularExpression>
 #include <aomusicplayer.h>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 13)
-#else
-#include <modules/networking/download_manager.h>
-#endif
-
 AudioManager AudioManager::s_Instance;
 
 void AudioManager::InitializeAudio()

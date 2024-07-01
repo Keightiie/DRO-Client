@@ -81,9 +81,10 @@ void set_text_alignment(QWidget *p_widget, QString p_identifier, QString p_ini_f
 void set_font(QWidget *p_widget, QString p_identifier, QString ini_file, AOApplication *ao_app)
 {
 
-  ThemeSceneType l_scene = LOBBY;
-  if(ini_file == COURTROOM_FONTS_INI) l_scene = COURTROOM;
-  else if(ini_file == REPLAYS_FONTS_INI) l_scene = REPLAYS;
+  ThemeSceneType l_scene = SceneTypeLobby;
+  if(ini_file == COURTROOM_FONTS_INI) l_scene = SceneTypeCourtroom;
+  else if(ini_file == REPLAYS_FONTS_INI) l_scene = SceneTypeReplays;
+  else if(ini_file == VIEWPORT_FONTS_INI) l_scene = SceneTypeViewport;
 
 
   QString class_name = p_widget->metaObject()->className();
@@ -155,7 +156,7 @@ void set_drtextedit_font(DRTextEdit *p_widget, QString p_identifier, QString p_i
 
   if(ao_app->current_theme->m_jsonLoaded)
   {
-    outline = ThemeManager::get().mCurrentThemeReader.GetFontData(COURTROOM, p_identifier).outline;
+    outline = ThemeManager::get().mCurrentThemeReader.GetFontData(SceneTypeCourtroom, p_identifier).outline;
   }
   else
   {
