@@ -26,6 +26,7 @@
 #include <QStyleOptionGraphicsItem>
 #include <QUrl>
 
+#include <math.h>
 #include <VLCQtCore/Audio.h>
 
 DRVideoScreen::DRVideoScreen(AOApplication *ao_app, QGraphicsItem *parent)

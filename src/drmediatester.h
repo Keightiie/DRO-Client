@@ -2,10 +2,10 @@
 
 #include <QMediaPlayer>
 #include <QObject>
-#include <VLCQtCore.framework/Headers/Common.h>
-#include <VLCQtCore.framework/Headers/Instance.h>
-#include <VLCQtCore.framework/Headers/Media.h>
-#include <VLCQtCore.framework/Headers/MediaPlayer.h>
+#include <VLCQtCore/Common.h>
+#include <VLCQtCore/Instance.h>
+#include <VLCQtCore/Media.h>
+#include <VLCQtCore/MediaPlayer.h>
 
 class DRMediaTester : public QObject
 {

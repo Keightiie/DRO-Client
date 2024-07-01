@@ -288,6 +288,20 @@ SOURCES += \
 #    in the same way as BASS. Discord RPC uses CMake, which does not play nicely with
 #    QMake, so this step must be manual.
 LIBS += -L$$PWD/3rd -lbass -lbassopus -ldiscord-rpc
+# 3. You need to get VLC-Qt and place them in the 3rd folder too. Be sure to include the
+#    plugins folder too which contains all the codecs that VLC uses. If you're compiling
+#    on MacOS, copy the framework folders directly
+win32 {
+LIBS += -lVLCQtCore -lVLCQtWidgets
+}
+win64 {
+LIBS += -lVLCQtCore -lVLCQtWidgets
+}
+macx {
+LIBS += -F$$PWD/3rd/ -framework VLCQtCore -framework VLCQtWidgets
+QMAKE_APPLE_DEVICE_ARCHS = x86_64
+}
+
 
 RESOURCES += \
   res.qrc
@@ -304,8 +318,3 @@ FORMS += \
 # Mac stuff
 QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
 ICON = icon.icns
-
-macx {
-LIBS += -F$$PWD/3rd/ -framework VLCQtCore -framework VLCQtWidgets
-QMAKE_APPLE_DEVICE_ARCHS = x86_64
-}
