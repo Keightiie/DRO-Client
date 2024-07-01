@@ -15,8 +15,9 @@ if not is_release:
 if glob.glob(build_dir + '/release/*.exe'):
     platform = 'win'
     print('Windows build detected. Proceeding to copy Windows libraries')
-elif glob.glob(build_dir + '/release/*.app'):
+elif glob.glob(build_dir + '/*.app'):
     platform = 'mac'
+    macapp_dir = glob.glob(build_dir + '/*.app')[0]
     print('MacOS build detected. Proceeding to copy MacOS libraries')
 else:
     platform = 'unknown'
@@ -29,11 +30,16 @@ if platform == 'win':
         print('Copying', file)
         shutil.copy2(file, build_dir + '/release/')
     print('Copying plugins directory')
-    shutil.copytree(pro_dir + '/3rd/win32/plugins', build_dir + '/release/plugins', dirs_exist_ok=True)
+    shutil.copytree(pro_dir + '/3rd/win32/plugins', build_dir + '/release/plugins', dirs_exist_ok=True, symlinks=True, ignore_dangling_symlinks=True)
 elif platform == 'mac':
+    if not os.path.isdir(macapp_dir + '/Contents/Frameworks/'):
+        os.makedirs(macapp_dir + '/Contents/Frameworks/')
     for file in glob.glob(pro_dir + '/3rd/macx64/*.dylib'):
         print('Copying', file)
-        shutil.copy2(file, build_dir + '/release/')
+        shutil.copy2(file, macapp_dir + '/Contents/Frameworks/')
     for file in glob.glob(pro_dir + '/3rd/macx64/*.framework'):
         print('Copying', file)
-        shutil.copytree(file, build_dir + '/release/', dirs_exist_ok=True)
+        dest_dir = macapp_dir + '/Contents/Frameworks/' + os.path.basename(file)
+        if os.path.isdir(dest_dir):
+            shutil.rmtree(dest_dir)
+        shutil.copytree(file, dest_dir, dirs_exist_ok=True, symlinks=True, ignore_dangling_symlinks=True)

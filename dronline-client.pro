@@ -324,7 +324,19 @@ LIBS += -F$$PWD/3rd/macx64 -framework VLCQtCore -framework VLCQtWidgets
 QMAKE_APPLE_DEVICE_ARCHS = x86_64
 }
 
-# Copying files after release builds
-win32 {
-QMAKE_POST_LINK += $$quote(python $$PWD/post-build-script.py$$escape_expand(\n\t))
+CONFIG( debug, debug|release ) {
+    # debug, don't do anything
+} else {
+    # release
+
+    # Manually copy 3rd party libraries
+    QMAKE_POST_LINK += $$quote(python3 $$PWD/post-build-script.py$$escape_expand(\n\t))
+
+    # Run deployqt to copy Qt libraries
+    win32 {
+        QMAKE_POST_LINK += windeployqt $$shell_quote($$shell_path($${OUT_PWD}/release/$${TARGET}.exe))$$escape_expand(\n\t)
+    }
+    macx {
+        QMAKE_POST_LINK += macdeployqt $$shell_quote($$shell_path($${OUT_PWD}/$${TARGET}.app)) -dmg -always-overwrite$$escape_expand(\n\t)
+    }
 }
