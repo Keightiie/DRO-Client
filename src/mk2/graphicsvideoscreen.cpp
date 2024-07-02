@@ -43,16 +43,9 @@ DRVideoScreen::DRVideoScreen(AOApplication *ao_app, QGraphicsItem *parent)
   setAspectRatioMode(Qt::KeepAspectRatioByExpanding);
 
   // Setup libvlc
-  _vlcInstance = new VlcInstance(VlcCommon::args(), this);
-  _vlcPlayer = new VlcMediaPlayer(_vlcInstance);
-
-  _widget = ao_app->m_courtroom;
-  _vlcWidget = new VlcWidgetVideo(_widget);
-  _vlcWidget->setMediaPlayer(_vlcPlayer);
-  _vlcPlayer->setVideoWidget(_vlcWidget);
-
-  connect(_vlcPlayer, SIGNAL(stateChanged()), this, SLOT(vlc_stateChanged()));
-  connect(_vlcPlayer, SIGNAL(mediaChanged()), this, SLOT(vlc_mediaChanged(libvlc_media_t*)));
+  _vlcInstance = nullptr;
+  vlc_initialized = false;
+  initialize_vlc();
 
   // Setup Qt Media Player
   m_player->setVideoOutput(this);
@@ -74,6 +67,36 @@ DRVideoScreen::DRVideoScreen(AOApplication *ao_app, QGraphicsItem *parent)
 DRVideoScreen::~DRVideoScreen()
 {}
 
+float init_delay = 1000;
+bool DRVideoScreen::initialize_vlc()
+{
+  if (_vlcInstance != nullptr)
+    return vlc_initialized;
+  if (!ao_app->ao_config->video_backend_vlc())
+    return false;
+
+  qDebug() << "//// INTIALIZING VLC for " << this;
+  _vlcInstance = new VlcInstance(VlcCommon::args(), this);
+  _vlcPlayer = new VlcMediaPlayer(_vlcInstance);
+
+  _widget = ao_app->m_courtroom;
+  _vlcWidget = new VlcWidgetVideo(_widget);
+  _vlcWidget->setMediaPlayer(_vlcPlayer);
+  _vlcPlayer->setVideoWidget(_vlcWidget);
+
+  connect(_vlcPlayer, SIGNAL(stateChanged()), this, SLOT(vlc_stateChanged()));
+  //connect(_vlcPlayer, SIGNAL(mediaChanged()), this, SLOT(vlc_mediaChanged(libvlc_media_t*)));
+
+  QTimer::singleShot(init_delay, this, &DRVideoScreen::set_vlc_initialized);
+  return false;
+}
+
+void DRVideoScreen::set_vlc_initialized()
+{
+  vlc_initialized = true;
+  qDebug() << "//// VLC INITIALIZED DONE for " << this;
+}
+
 QString DRVideoScreen::get_file_name() const
 {
   return m_file_name;
@@ -81,10 +104,6 @@ QString DRVideoScreen::get_file_name() const
 
 void DRVideoScreen::set_file_name(QString p_file_name)
 {
-  // if (m_file_name == p_file_name)
-  // {
-  //   return;
-  // }
   stop();
   qInfo() << "loading media file" << p_file_name;
   m_scanned = false;
@@ -96,6 +115,13 @@ void DRVideoScreen::set_file_name(QString p_file_name)
   }
   if (ao_app->ao_config->video_backend_vlc())
   {
+    if (!initialize_vlc())
+    {
+      QTimer::singleShot(init_delay, this, [p_file_name, this] () {
+        DRVideoScreen::set_file_name(p_file_name);
+      });
+      return;
+    }
     _vlcMedia = new VlcMedia(m_file_name, true, _vlcInstance);
     _vlcPlayer->open(_vlcMedia);
   }
@@ -145,13 +171,20 @@ void DRVideoScreen::stop()
 {
   m_running = false;
 
-  if ( _vlcPlayer->state() == Vlc::State::Playing)
-  {
-    _vlcPlayer->stop();
-  }
   if (m_player->state() != QMediaPlayer::StoppedState)
   {
     m_player->stop();
+  }
+  if (ao_app->ao_config->video_backend_vlc())
+  {
+    if (!initialize_vlc())
+    {
+      return;
+    }
+    if ( _vlcPlayer->state() == Vlc::State::Playing)
+    {
+      _vlcPlayer->stop();
+    }
   }
 }
 
@@ -257,6 +290,11 @@ void DRVideoScreen::start_playback()
 {
   if (ao_app->ao_config->video_backend_vlc())
   {
+    if (!initialize_vlc())
+    {
+      QTimer::singleShot(init_delay, this, &DRVideoScreen::start_playback);
+      return;
+    }
     _vlcPlayer->setPosition(0);
     update_volume();
     _vlcWidget->setGeometry(ao_app->m_courtroom->get_video_rect());
@@ -336,11 +374,17 @@ void DRVideoScreen::update_volume()
     m_player->setVolume(l_volume);
   }
 
-  // improve audio volume scaling for vlc since it's different from QMediaPlayer
-  int transformed_volume = sqrt(sqrt(l_volume) * 10) * 10;
-  if (_vlcPlayer->audio()->volume() != transformed_volume)
+  if (ao_app->ao_config->video_backend_vlc())
   {
-    // qDebug() << "//// SET VOLUME " << l_volume << " LOG VOLUME " << transformed_volume;
-    _vlcPlayer->audio()->setVolume(transformed_volume);
+    if (!initialize_vlc())
+    {
+      return;
+    }
+    // improve audio volume scaling for vlc since it's different from QMediaPlayer
+    int transformed_volume = sqrt(sqrt(l_volume) * 10) * 10;
+    if (_vlcPlayer->audio()->volume() != transformed_volume)
+    {
+      _vlcPlayer->audio()->setVolume(transformed_volume);
+    }
   }
 }

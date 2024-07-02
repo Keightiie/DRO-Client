@@ -10,6 +10,7 @@ DRMediaTester::DRMediaTester(QObject *parent)
     : QObject(parent)
 {
   AOApplication* ap_app = static_cast<AOApplication*>(parent);
+
   if (ap_app->ao_config->video_backend_vlc())
   {
     _vlcInstance = new VlcInstance(VlcCommon::args(), this);

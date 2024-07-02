@@ -177,8 +177,11 @@ AOConfigPanel::AOConfigPanel(AOApplication *p_ao_app, QWidget *p_parent)
 
   // video
   ui_video_backend_vlc = AO_GUI_WIDGET(QCheckBox, "video_backend_vlc");
-#ifdef Q_OS_MAC
-  // ui_video_backend_vlc->setDisabled(true);
+#ifdef QT_DEBUG
+  #ifdef Q_CC_MSVC
+  ui_video_backend_vlc->setChecked(false);
+  //ui_video_backend_vlc->setDisabled(true);
+  #endif
 #endif
 
   // about

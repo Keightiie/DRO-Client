@@ -83,11 +83,16 @@ private:
   VlcMedia *_vlcMedia;
   VlcMediaPlayer *_vlcPlayer;
   VlcWidgetVideo *_vlcWidget;
-  QGraphicsProxyWidget *_widgetProxy;
+
+  bool vlc_initialized;
 
   void start_playback();
 
   void finish_playback();
+
+  bool initialize_vlc();
+
+  void set_vlc_initialized();
 
   Vlc::State m_vlc_state;
 

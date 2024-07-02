@@ -243,11 +243,24 @@ void AOConfigPrivate::load_file()
   SceneManager::get().setFadeDuration(fade_duration);
   blank_blips = cfg.value("blank_blips").toBool();
 
-  // video
-#ifdef Q_OS_MAC
+#ifdef QT_DEBUG
+  #ifdef Q_CC_MSVC
+  is_video_backend_vlc = false;
+  qWarning() << "NOTE: libvlc automatically turned off for MSVC debug mode because it VLC-Qt seems to crash with it.";
+  #else
+    #ifdef Q_OS_MAC
   is_video_backend_vlc = cfg.value("video_backend", "vlc").toString() == "vlc";
-#else
+    #else
   is_video_backend_vlc = cfg.value("video_backend", "qt").toString() == "vlc";
+    #endif
+  #endif
+#else
+  // video
+  #ifdef Q_OS_MAC
+  is_video_backend_vlc = cfg.value("video_backend", "vlc").toString() == "vlc";
+  #else
+  is_video_backend_vlc = cfg.value("video_backend", "qt").toString() == "vlc";
+  #endif
 #endif
 
   // audio update
