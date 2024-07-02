@@ -7,18 +7,26 @@ VERSION = 2.0.0
 TARGET = dro-client
 
 RC_ICONS = icon.ico
+TARGETPLATFORM = unknown
 
 INCLUDEPATH += $$PWD/include $$PWD/src
 DEPENDPATH += $$PWD/include $$PWD/src
 
 win32 {
-INCLUDEPATH += $$PWD/3rd/win32
-DEPENDPATH += $$PWD/3rd/win32
+    !contains(QMAKE_HOST.arch, x86_64) {
+        TARGETPLATFORM = win32
+    } else {
+        TARGETPLATFORM = win64
+    }
 }
 macx {
-INCLUDEPATH += $$PWD/3rd/macx64
-DEPENDPATH += $$PWD/3rd/macx64
+    TARGETPLATFORM = macx64
 }
+
+message("TARGETPLATFORM = $$TARGETPLATFORM")
+
+INCLUDEPATH += $$PWD/3rd/$$TARGETPLATFORM
+DEPENDPATH += $$PWD/3rd/$$TARGETPLATFORM
 
 HEADERS += \
   src/aoapplication.h \
@@ -316,12 +324,12 @@ ICON = icon.icns
 #    plugins folder too which contains all the codecs that VLC uses. If you're compiling
 #    on MacOS, copy the framework folders directly
 win32 {
-LIBS += -L$$PWD/3rd/win32 -lbass -lbassopus -ldiscord-rpc -lVLCQtCore -lVLCQtWidgets
+    LIBS += -L$$PWD/3rd/$$TARGETPLATFORM -lbass -lbassopus -ldiscord-rpc -lVLCQtCore -lVLCQtWidgets
 }
 macx {
-LIBS += -L$$PWD/3rd/macx64 -lbass -lbassopus -ldiscord-rpc
-LIBS += -F$$PWD/3rd/macx64 -framework VLCQtCore -framework VLCQtWidgets
-QMAKE_APPLE_DEVICE_ARCHS = x86_64
+    LIBS += -L$$PWD/3rd/$$TARGETPLATFORM -lbass -lbassopus -ldiscord-rpc
+    LIBS += -F$$PWD/3rd/$$TARGETPLATFORM -framework VLCQtCore -framework VLCQtWidgets
+    QMAKE_APPLE_DEVICE_ARCHS = x86_64
 }
 
 CONFIG( debug, debug|release ) {
@@ -330,7 +338,7 @@ CONFIG( debug, debug|release ) {
     # release
 
     # Manually copy 3rd party libraries
-    QMAKE_POST_LINK += $$quote(python3 $$PWD/post-build-script.py$$escape_expand(\n\t))
+    QMAKE_POST_LINK += $$quote(python3 $$PWD/post-build-script.py $$TARGETPLATFORM$$escape_expand(\n\t))
 
     # Run deployqt to copy Qt libraries
     win32 {
