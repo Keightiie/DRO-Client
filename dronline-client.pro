@@ -333,11 +333,12 @@ macx {
 }
 
 CONFIG( debug, debug|release ) {
-    # debug, don't do anything
+    # debug, copy 3rd party libraries only for windows
+    win32 {
+        QMAKE_POST_LINK += $$quote(python3 $$PWD/post-build-script.py $$TARGETPLATFORM$$escape_expand(\n\t))
+    }
 } else {
-    # release
-
-    # Manually copy 3rd party libraries
+    # release, copy 3rd party libraries always
     QMAKE_POST_LINK += $$quote(python3 $$PWD/post-build-script.py $$TARGETPLATFORM$$escape_expand(\n\t))
 
     # Run deployqt to copy Qt libraries

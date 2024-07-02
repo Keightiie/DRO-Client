@@ -11,16 +11,15 @@ libs_dir = sys.argv[1]
 pro_dir = os.path.dirname(os.path.realpath(__file__))
 build_dir = os.getcwd()
 
-# Assume this script is only run for release builds since there's no way to check
-is_release = True
-if not is_release:
-    print('Not a Release build, do not copy libraries')
-    exit(1)
-
 # Check what platform the build directory is
 if glob.glob(build_dir + '/release/*.exe'):
     platform = 'win'
-    print('Windows build detected. Proceeding to copy Windows libraries')
+    type_dir = 'release'
+    print('Windows release build detected. Proceeding to copy Windows libraries')
+elif glob.glob(build_dir + '/debug/*.exe'):
+    platform = 'win'
+    type_dir = 'debug'
+    print('Windows debug build detected. Proceeding to copy Windows libraries')
 elif glob.glob(build_dir + '/*.app'):
     platform = 'mac'
     macapp_dir = glob.glob(build_dir + '/*.app')[0]
@@ -34,12 +33,12 @@ else:
 if platform == 'win':
     for file in glob.glob(pro_dir + '/3rd/' + libs_dir + '/*.dll'):
         print('Copying', file)
-        shutil.copy2(file, build_dir + '/release/')
+        shutil.copy2(file, build_dir + '/' + type_dir + '/')
     for file in glob.glob(pro_dir + '/3rd/' + libs_dir + '/*.lib'):
         print('Copying', file)
-        shutil.copy2(file, build_dir + '/release/')
+        shutil.copy2(file, build_dir + '/' + type_dir + '/')
     print('Copying directory ' + pro_dir + '/3rd/' + libs_dir + '/plugins')
-    shutil.copytree(pro_dir + '/3rd/' + libs_dir + '/plugins', build_dir + '/release/plugins', dirs_exist_ok=True, symlinks=True, ignore_dangling_symlinks=True)
+    shutil.copytree(pro_dir + '/3rd/' + libs_dir + '/plugins', build_dir + '/' + type_dir + '/plugins', dirs_exist_ok=True, symlinks=True, ignore_dangling_symlinks=True)
 elif platform == 'mac':
     if not os.path.isdir(macapp_dir + '/Contents/Frameworks/'):
         os.makedirs(macapp_dir + '/Contents/Frameworks/')
