@@ -43,6 +43,7 @@ public:
   DRVideoScreen(AOApplication *ao_app, QGraphicsItem *parent = nullptr);
   ~DRVideoScreen();
 
+  void set_video_parent(QWidget *parent);
   QString get_file_name() const;
   QWidget *_widget;
 
@@ -54,6 +55,8 @@ public slots:
   void play();
 
   void stop();
+
+  void resized();
 
 signals:
   void started();

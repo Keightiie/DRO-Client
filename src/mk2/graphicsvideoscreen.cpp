@@ -41,6 +41,7 @@ DRVideoScreen::DRVideoScreen(AOApplication *ao_app, QGraphicsItem *parent)
     , m_player(new QMediaPlayer(this, QMediaPlayer::LowLatency))
 {
   setAspectRatioMode(Qt::KeepAspectRatioByExpanding);
+  _widget = nullptr;
 
   // Setup libvlc
   _vlcInstance = nullptr;
@@ -75,11 +76,9 @@ bool DRVideoScreen::initialize_vlc()
   if (!ao_app->ao_config->video_backend_vlc())
     return false;
 
-  qDebug() << "//// INTIALIZING VLC for " << this;
+  // qDebug() << "//// INTIALIZING VLC for " << this;
   _vlcInstance = new VlcInstance(VlcCommon::args(), this);
   _vlcPlayer = new VlcMediaPlayer(_vlcInstance);
-
-  _widget = ao_app->m_courtroom;
   _vlcWidget = new VlcWidgetVideo(_widget);
   _vlcWidget->setMediaPlayer(_vlcPlayer);
   _vlcPlayer->setVideoWidget(_vlcWidget);
@@ -94,7 +93,34 @@ bool DRVideoScreen::initialize_vlc()
 void DRVideoScreen::set_vlc_initialized()
 {
   vlc_initialized = true;
-  qDebug() << "//// VLC INITIALIZED DONE for " << this;
+  // qDebug() << "//// VLC INITIALIZED DONE for " << this;
+}
+
+void DRVideoScreen::set_video_parent(QWidget* parent)
+{
+  _widget = parent;
+  if (!initialize_vlc())
+  {
+    return;
+  }
+  if (_widget != nullptr)
+  {
+    _vlcWidget->setParent(_widget);
+    _vlcWidget->setGeometry(_widget->rect());
+  }
+  else
+  {
+    if (ao_app->m_courtroom->get_video_rect() != QRect())
+    {
+      _vlcWidget->setParent(ao_app->m_courtroom);
+      _vlcWidget->setGeometry(ao_app->m_courtroom->get_video_rect());
+    }
+  }
+}
+
+void DRVideoScreen::resized()
+{
+  set_video_parent(_widget);
 }
 
 QString DRVideoScreen::get_file_name() const
@@ -105,7 +131,6 @@ QString DRVideoScreen::get_file_name() const
 void DRVideoScreen::set_file_name(QString p_file_name)
 {
   stop();
-  qInfo() << "loading media file" << p_file_name;
   m_scanned = false;
   m_video_available = false;
   m_file_name = p_file_name;
@@ -122,11 +147,13 @@ void DRVideoScreen::set_file_name(QString p_file_name)
       });
       return;
     }
+    qInfo() << "loading media file" << p_file_name << " for " << this;
     _vlcMedia = new VlcMedia(m_file_name, true, _vlcInstance);
     _vlcPlayer->open(_vlcMedia);
   }
   else
   {
+    qInfo() << "loading media file" << p_file_name << " for " << this;
     m_player->setMedia(QUrl::fromLocalFile(m_file_name));
   }
 }
@@ -297,7 +324,8 @@ void DRVideoScreen::start_playback()
     }
     _vlcPlayer->setPosition(0);
     update_volume();
-    _vlcWidget->setGeometry(ao_app->m_courtroom->get_video_rect());
+    // qInfo() << "/// start playback for " << this << " at " << ao_app->m_courtroom->get_video_rect() << " on parent " << _vlcWidget->parentWidget();
+    set_video_parent(_widget);
     _vlcWidget->show();
     _vlcWidget->activateWindow();
     _vlcWidget->raise();

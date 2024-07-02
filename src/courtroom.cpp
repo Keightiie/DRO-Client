@@ -820,6 +820,8 @@ bool Courtroom::is_spectating()
 
 QRect Courtroom::get_video_rect()
 {
+  if (ui_viewport == nullptr)
+    return QRect();
   return ui_viewport->geometry();
 }
 
