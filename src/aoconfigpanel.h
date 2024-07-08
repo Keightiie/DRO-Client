@@ -203,6 +203,9 @@ private:
   QLabel *ui_blip_value = nullptr;
   QPushButton *ui_reload_audiotracks = nullptr;
 
+  // video
+  QCheckBox *ui_video_backend_vlc = nullptr;
+
   // about
   QLabel *ui_about = nullptr;
 

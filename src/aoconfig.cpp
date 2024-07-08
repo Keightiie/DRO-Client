@@ -118,6 +118,9 @@ private:
   int fade_duration;
   bool blank_blips;
 
+  // video
+  bool is_video_backend_vlc;
+
   // audio sync
   DRAudioEngine *audio_engine = nullptr;
 };
@@ -240,6 +243,26 @@ void AOConfigPrivate::load_file()
   SceneManager::get().setFadeDuration(fade_duration);
   blank_blips = cfg.value("blank_blips").toBool();
 
+#ifdef QT_DEBUG
+  #ifdef Q_CC_MSVC
+  is_video_backend_vlc = false;
+  qWarning() << "NOTE: libvlc automatically turned off for MSVC debug mode because it VLC-Qt seems to crash with it.";
+  #else
+    #ifdef Q_OS_MAC
+  is_video_backend_vlc = cfg.value("video_backend", "vlc").toString() == "vlc";
+    #else
+  is_video_backend_vlc = cfg.value("video_backend", "qt").toString() == "vlc";
+    #endif
+  #endif
+#else
+  // video
+  #ifdef Q_OS_MAC
+  is_video_backend_vlc = cfg.value("video_backend", "vlc").toString() == "vlc";
+  #else
+  is_video_backend_vlc = cfg.value("video_backend", "qt").toString() == "vlc";
+  #endif
+#endif
+
   // audio update
   audio_engine->set_volume(master_volume);
   audio_engine->get_family(DRAudio::Family::FSystem)->set_volume(system_volume);
@@ -350,6 +373,9 @@ void AOConfigPrivate::save_file()
   cfg.setValue("theme_resize", theme_resize);
   cfg.setValue("fade_duration", fade_duration);
   cfg.setValue("blank_blips", blank_blips);
+
+  // video
+  cfg.setValue("video_backend", is_video_backend_vlc ? "vlc" : "qt");
 
   cfg.remove("character_ini");
   { // ini swap
@@ -749,6 +775,11 @@ double AOConfig::theme_resize() const
 int AOConfig::fade_duration() const
 {
   return d->fade_duration;
+}
+
+bool AOConfig::video_backend_vlc() const
+{
+  return d->is_video_backend_vlc;
 }
 
 void AOConfig::load_file()
@@ -1250,6 +1281,14 @@ void AOConfig::setFadeDuration(int duration)
   d->fade_duration = duration;
   SceneManager::get().setFadeDuration(duration);
   d->invoke_signal("fade_duration_changed", Q_ARG(int, duration));
+}
+
+void AOConfig::set_video_backend_vlc(bool p_video_backend_vlc)
+{
+  if (d->is_video_backend_vlc == p_video_backend_vlc)
+    return;
+  d->is_video_backend_vlc = p_video_backend_vlc;
+  d->invoke_signal("fade_duration_changed", Q_ARG(bool, d->is_video_backend_vlc));
 }
 
 // moc

@@ -45,14 +45,17 @@ public:
 signals:
   void VideoDone();
   void PreanimDone();
+  void Resized();
 
 public slots:
   void OnObjectionDone();
   void OnVideoDone();
   void OnPreanimDone();
 
-private:
+protected:
+  bool eventFilter(QObject *obj, QEvent *event) override;
 
+private:
   DRGraphicsView *m_UserInterface = nullptr;
   KeyframePlayer *m_ShoutsPlayer = nullptr;
 

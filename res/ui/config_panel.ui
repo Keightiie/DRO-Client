@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>890</width>
-    <height>544</height>
+    <height>572</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -62,7 +62,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -114,6 +114,32 @@
              <widget class="QComboBox" name="languageSelector"/>
             </item>
            </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_4">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>60</height>
+            </size>
+           </property>
+           <property name="title">
+            <string>Video</string>
+           </property>
+           <widget class="QCheckBox" name="video_backend_vlc">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>30</y>
+              <width>691</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Use libvlc to play videos (better support for MacOS)</string>
+            </property>
+           </widget>
           </widget>
          </item>
          <item>
@@ -1628,8 +1654,8 @@
           <rect>
            <x>10</x>
            <y>190</y>
-           <width>247</width>
-           <height>26</height>
+           <width>262</width>
+           <height>32</height>
           </rect>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_3">

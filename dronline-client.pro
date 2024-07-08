@@ -7,9 +7,26 @@ VERSION = 2.0.0
 TARGET = dro-client
 
 RC_ICONS = icon.ico
+TARGETPLATFORM = unknown
 
-INCLUDEPATH += $$PWD/include $$PWD/src $$PWD/3rd
-DEPENDPATH += $$PWD/include $$PWD/src $$PWD/3rd
+INCLUDEPATH += $$PWD/include $$PWD/src
+DEPENDPATH += $$PWD/include $$PWD/src
+
+win32 {
+    !contains(QMAKE_HOST.arch, x86_64) {
+        TARGETPLATFORM = win32
+    } else {
+        TARGETPLATFORM = win64
+    }
+}
+macx {
+    TARGETPLATFORM = macx64
+}
+
+message("TARGETPLATFORM = $$TARGETPLATFORM")
+
+INCLUDEPATH += $$PWD/3rd/$$TARGETPLATFORM
+DEPENDPATH += $$PWD/3rd/$$TARGETPLATFORM
 
 HEADERS += \
   src/aoapplication.h \
@@ -281,14 +298,6 @@ SOURCES += \
   src/utils.cpp \
   src/version.cpp
 
-# 1. You need to get BASS and put the x86 bass DLL/headers in the project root folder
-#    AND the compilation output folder. If you want a static link, you'll probably
-#    need the .lib file too. MinGW-GCC is really finicky finding BASS, it seems.
-# 2. You need to compile the Discord Rich Presence SDK separately and add the lib/headers
-#    in the same way as BASS. Discord RPC uses CMake, which does not play nicely with
-#    QMake, so this step must be manual.
-LIBS += -L$$PWD/3rd -lbass -lbassopus -ldiscord-rpc
-
 RESOURCES += \
   res.qrc
 
@@ -304,3 +313,39 @@ FORMS += \
 # Mac stuff
 QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
 ICON = icon.icns
+
+# 1. You need to get BASS and put the x86 bass DLL/headers in the project root folder
+#    AND the compilation output folder. If you want a static link, you'll probably
+#    need the .lib file too. MinGW-GCC is really finicky finding BASS, it seems.
+# 2. You need to compile the Discord Rich Presence SDK separately and add the lib/headers
+#    in the same way as BASS. Discord RPC uses CMake, which does not play nicely with
+#    QMake, so this step must be manual.
+# 3. You need to get VLC-Qt and place them in the 3rd folder too. Be sure to include the
+#    plugins folder too which contains all the codecs that VLC uses. If you're compiling
+#    on MacOS, copy the framework folders directly
+win32 {
+    LIBS += -L$$PWD/3rd/$$TARGETPLATFORM -lbass -lbassopus -ldiscord-rpc -lVLCQtCore -lVLCQtWidgets
+}
+macx {
+    LIBS += -L$$PWD/3rd/$$TARGETPLATFORM -lbass -lbassopus -ldiscord-rpc
+    LIBS += -F$$PWD/3rd/$$TARGETPLATFORM -framework VLCQtCore -framework VLCQtWidgets
+    QMAKE_APPLE_DEVICE_ARCHS = x86_64
+}
+
+CONFIG( debug, debug|release ) {
+    # debug, copy 3rd party libraries only for windows
+    win32 {
+        QMAKE_POST_LINK += $$quote(python3 $$PWD/post-build-script.py $$TARGETPLATFORM$$escape_expand(\n\t))
+    }
+} else {
+    # release, copy 3rd party libraries always
+    QMAKE_POST_LINK += $$quote(python3 $$PWD/post-build-script.py $$TARGETPLATFORM$$escape_expand(\n\t))
+
+    # Run deployqt to copy Qt libraries
+    win32 {
+        QMAKE_POST_LINK += windeployqt $$shell_quote($$shell_path($${OUT_PWD}/release/$${TARGET}.exe))$$escape_expand(\n\t)
+    }
+    macx {
+        QMAKE_POST_LINK += macdeployqt $$shell_quote($$shell_path($${OUT_PWD}/$${TARGET}.app)) -dmg -always-overwrite$$escape_expand(\n\t)
+    }
+}

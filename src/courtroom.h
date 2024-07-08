@@ -302,6 +302,7 @@ signals:
 public:
   AOConfig *ao_config = nullptr;
   bool is_spectating();
+  QRect get_video_rect();
 
 private:
   bool m_first_theme_loading = true;

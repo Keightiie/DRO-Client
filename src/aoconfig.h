@@ -2,6 +2,7 @@
 #define AOCONFIG_H
 
 #include "datatypes.h"
+#include "aoapplication.h"
 
 #include <QObject>
 
@@ -14,6 +15,8 @@ class AOConfig : public QObject
 public:
   AOConfig(QObject *p_parent = nullptr);
   ~AOConfig();
+
+  AOApplication* ao_app = nullptr;
 
   // generic getters
   QString get_string(QString p_name, QString p_default = nullptr) const;
@@ -85,6 +88,9 @@ public:
   double theme_resize() const;
   int fade_duration() const;
 
+  // video
+  bool video_backend_vlc() const;
+
   // io
 public slots:
   void load_file();
@@ -154,6 +160,9 @@ public slots:
   void set_blank_blips(bool p_enabled);
   void setThemeResize(double resize);
   void setFadeDuration(int duration);
+
+  // video
+  void set_video_backend_vlc(bool p_video_backend_vlc);
 
   // signals
 signals:
@@ -225,6 +234,9 @@ signals:
   void blip_rate_changed(int);
   void punctuation_delay_changed(int);
   void blank_blips_changed(bool);
+
+  // video
+  void video_backend_vlc_changed(bool);
 
   //Theme
   void theme_resize_changed(double);

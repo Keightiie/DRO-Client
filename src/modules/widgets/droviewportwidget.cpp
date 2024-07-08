@@ -32,6 +32,10 @@ void DROViewportWidget::ConstructViewport(ThemeSceneType t_scene)
   this->scene()->addItem(m_VpShouts);
   this->scene()->addItem(m_VpWtce);
 
+  // Video player needs special treatment since VLC doesn't use graphics scene
+  m_VpVideo->set_video_parent(this);
+  connect(this, SIGNAL(Resized()), m_VpVideo, SLOT(resized()));
+
   m_VpBackground->start();
   m_VpPlayer->start();
 
@@ -44,6 +48,8 @@ void DROViewportWidget::ConstructViewport(ThemeSceneType t_scene)
   connect(m_VpPlayer, SIGNAL(done()), this, SLOT(OnPreanimDone()));
 
   ConstructUserInterface();
+
+  this->installEventFilter(this);
 }
 
 void DROViewportWidget::ProcessIncomingMessage(ICMessageData *t_IncomingMessage)
@@ -253,3 +259,12 @@ void DROViewportWidget::OnPreanimDone()
     m_VpPlayer->start();
   }
 }
+
+bool DROViewportWidget::eventFilter(QObject *obj, QEvent *event)
+{
+  // qDebug() << "//// EVENT " << event->type();
+  if (event->type() == QEvent::Resize)
+    emit Resized();
+  return QObject::eventFilter(obj, event);
+}
+
