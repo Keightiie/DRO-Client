@@ -1,4 +1,4 @@
-QT += core gui widgets uitools network multimedia multimediawidgets
+QT += core gui widgets uitools network multimedia multimediawidgets opengl
 
 CONFIG += c++17
 
@@ -313,7 +313,7 @@ SOURCES += \
 # 2. You need to compile the Discord Rich Presence SDK separately and add the lib/headers
 #    in the same way as BASS. Discord RPC uses CMake, which does not play nicely with
 #    QMake, so this step must be manual.
-LIBS += -L$$PWD/3rd -lbass -lbassopus -ldiscord-rpc
+LIBS += -L$$PWD/3rd -lbass -lbassopus -ldiscord-rpc -lNeoViewport -lOpenGL32
 
 RESOURCES += \
   res.qrc

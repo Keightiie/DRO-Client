@@ -868,6 +868,7 @@ void Courtroom::on_character_ini_changed()
 void Courtroom::on_ic_message_return_pressed()
 {
 
+  ui_vp_background->hide();
   bool l_non_legacy_server = GameManager::get().usesServerFunction("v2");
 
   if (ui_ic_chat_message_field->text() == "")

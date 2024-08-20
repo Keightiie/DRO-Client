@@ -11,6 +11,7 @@
 #include "mk2/spriteplayer.h"
 #include "mk2/spritereadersynchronizer.h"
 #include "modules/widgets/evidence_list.h"
+#include "neo/viewport/neo_renderer.h"
 
 class AOApplication;
 class AOBlipPlayer;
@@ -435,6 +436,8 @@ private:
   DRPositionMap m_position_map;
 
   AOImageDisplay *ui_background = nullptr;
+
+  NeoRenderer *p_WidgetOpenGL = nullptr;
 
   ViewportInvestigationDisplay *p_WidgetInvestigate = nullptr;
   KeyframePlayer *wShoutsLayer = nullptr;

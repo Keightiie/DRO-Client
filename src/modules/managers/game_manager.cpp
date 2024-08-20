@@ -5,6 +5,8 @@
 
 #include <modules/json/json_reader.h>
 
+#include <neo/viewport/neo_renderer.h>
+
 GameManager GameManager::s_Instance;
 
 void GameManager::StartGameLoop()
@@ -200,7 +202,12 @@ void GameManager::RunGameLoop()
     RenderAnimationLoop(eAnimationShout);
     RenderAnimationLoop(eAnimationGM);
 
-
+    NeoRenderer *l_Renderer = ThemeManager::get().GetWidgetType<NeoRenderer>("opengl_display");
+    if(l_Renderer != nullptr)
+    {
+      l_Renderer->TranslateRotation(QVector3D(0, 0.2f, 0));
+      l_Renderer->update();
+    }
     m_IsUpdateRunning = false;
     emit FrameComplete();
   }

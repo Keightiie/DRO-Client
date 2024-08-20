@@ -57,6 +57,8 @@
 #include <modules/managers/localization_manager.h>
 #include <modules/managers/variable_manager.h>
 
+#include <neo/readers/models/obj_model_reader.h>
+
 void Courtroom::create_widgets()
 {
   TimeDebugger::get().StartTimer("Theme Widgets");
@@ -96,6 +98,14 @@ void Courtroom::create_widgets()
   ui_viewport = new DRGraphicsView(this);
   p_WidgetInvestigate = new ViewportInvestigationDisplay(this, ao_app);
   p_WidgetInvestigate->UpdateAlpha(255);
+
+  p_WidgetOpenGL = new NeoRenderer(this);
+
+  p_WidgetOpenGL->TranslateTransform(QVector3D(-1, -1,  3));
+  p_WidgetOpenGL->TranslateRotation(QVector3D(0, 90,  0));
+
+  ObjModelReader *l_ModelReader = new ObjModelReader("base/models/backgrounds/DR1-1 Trial Grounds/model.obj");
+  p_WidgetOpenGL->LoadSceneObject(l_ModelReader->GenerateSceneObject());
 
   wShoutsLayer = new KeyframePlayer(this);
   wShoutsLayer->setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -143,6 +153,10 @@ void Courtroom::create_widgets()
       i_item->setPos(0, 0);
     }
   }
+
+
+  ui_viewport->setStyleSheet("background: transparent;");
+  ui_viewport->setBackgroundBrush(Qt::transparent);
 
   w_ViewportOverlay = new ViewportOverlay(ui_viewport);
 
@@ -785,6 +799,7 @@ void Courtroom::reset_widget_names()
       {"evidence_present", wEvidencePresent},
       {"chara_animations", wCharaAnimList},
       {"investigate_display", p_WidgetInvestigate},
+      {"opengl_display", p_WidgetOpenGL},
       {"shouts_player", wShoutsLayer},
       {"camera_display", m_GMCameraDisplay},
       {"screenshot", p_ButtonScreenshot}
@@ -1049,6 +1064,8 @@ void Courtroom::set_widgets()
   setupWidgetElement(ui_viewport, "viewport");
   setupWidgetElement(p_WidgetInvestigate, "viewport");
   setupWidgetElement(wShoutsLayer, "viewport");
+  setupWidgetElement(p_WidgetOpenGL, "viewport");
+
 
   setupWidgetElement(SceneManager::get().GetTransition(), "viewport");
   SceneManager::get().GetTransition()->move(0,0);
