@@ -2443,7 +2443,7 @@ void Courtroom::on_ooc_message_return_pressed()
     p_WidgetOpenGL->LoadSceneObject(l_ModelReader->GenerateSceneObject());
 
     p_WidgetOpenGL->EnableAutoUpdates();
-    p_WidgetOpenGL->update();
+    //p_WidgetOpenGL->update();
 
     ui_vp_background->hide();
 
@@ -2455,7 +2455,7 @@ void Courtroom::on_ooc_message_return_pressed()
     QStringList l_Parts = l_message.split(' ');
     if(l_Parts.count() != 4) return;
     p_WidgetOpenGL->SetTransform(QVector3D(l_Parts[1].toDouble(), l_Parts[2].toDouble(), l_Parts[3].toDouble()));
-    p_WidgetOpenGL->update();
+    //p_WidgetOpenGL->update();
     return;
   }
   else if (l_message.startsWith("/rainbow") && !is_rainbow_enabled)

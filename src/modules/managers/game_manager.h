@@ -48,12 +48,15 @@ public:
 
   void SetTrialCamera(int l_ID)
   {
+    int l_RotValue = (l_ID + 2) % 5;
+
+
 
     NeoRenderer *l_Renderer = ThemeManager::get().GetWidgetType<NeoRenderer>("opengl_display");
     if(l_Renderer == nullptr) return;
 
     m_CameraAnimation->AddKeyframe(m_GameUptime, eROTATION, l_Renderer->GetRotation().y(), EASE, EASE);
-    m_CameraAnimation->AddKeyframe(m_GameUptime + 250, eROTATION, l_ID * 22.5, EASE, EASE);
+    m_CameraAnimation->AddKeyframe(m_GameUptime + 250, eROTATION, -45 + (l_RotValue * 22.5), EASE, EASE);
     m_CameraAnimation->CacheAnimation();
     m_CameraAnimationStart = m_GameUptime;
   }

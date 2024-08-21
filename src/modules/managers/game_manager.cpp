@@ -128,14 +128,14 @@ void GameManager::UpdateCamera()
     {
       l_Renderer->TranslateTransform(QVector3D(-0.1f, 0, 0));
     }
-    l_Renderer->update();
+    //l_Renderer->update();
   }
   else
   {
     double l_Value = m_CameraAnimation->GetCachedValue(eROTATION, m_GameUptime);
     if(l_Value == -11037) return;
     l_Renderer->SetRotation(QVector3D(-5, l_Value, 0));
-    l_Renderer->update();
+    //l_Renderer->update();
   }
 
 }

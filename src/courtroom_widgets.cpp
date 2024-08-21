@@ -102,7 +102,7 @@ void Courtroom::create_widgets()
   p_WidgetOpenGL = new NeoRenderer(this);
   //p_WidgetOpenGL->DisableAutoUpdates();
 
-  p_WidgetOpenGL->TranslateTransform(QVector3D(0, -1,  0));
+  p_WidgetOpenGL->TranslateTransform(QVector3D(0, -0.8,  -3));
   p_WidgetOpenGL->TranslateRotation(QVector3D(-5, 90,  0));
 
   wShoutsLayer = new KeyframePlayer(this);
