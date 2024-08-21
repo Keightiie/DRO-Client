@@ -14,7 +14,7 @@ SceneTestingLabs::SceneTestingLabs(QWidget *parent) : QWidget{parent}
 
 void SceneTestingLabs::ConstructWidgets()
 {
-  NeoRenderer *l_NeoViewport = new NeoRenderer();
+  NeoRenderer *l_NeoViewport = new NeoRenderer(50);
   l_NeoViewport->resize(960, 544);
   l_NeoViewport->show();
 

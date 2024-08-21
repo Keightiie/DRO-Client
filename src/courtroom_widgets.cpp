@@ -99,7 +99,7 @@ void Courtroom::create_widgets()
   p_WidgetInvestigate = new ViewportInvestigationDisplay(this, ao_app);
   p_WidgetInvestigate->UpdateAlpha(255);
 
-  p_WidgetOpenGL = new NeoRenderer(this);
+  p_WidgetOpenGL = new NeoRenderer(50, this);
   //p_WidgetOpenGL->DisableAutoUpdates();
 
   p_WidgetOpenGL->TranslateTransform(QVector3D(0, -0.8,  -3));
