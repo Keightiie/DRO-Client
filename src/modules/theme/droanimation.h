@@ -24,6 +24,8 @@ public:
 
   void RunAnimation();
 
+  void SetAnimationLoops(bool l_Loop){m_AnimationLoops = l_Loop; };
+
   bool GetCurrentlyRunning();
   float GetCachedValue(AnimationVariableTypes type, int t_frame = -1);
   float GetCurrentValue(AnimationVariableTypes type);

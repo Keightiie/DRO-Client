@@ -438,6 +438,7 @@ private:
   AOImageDisplay *ui_background = nullptr;
 
   NeoRenderer *p_WidgetOpenGL = nullptr;
+  bool m_RendererModeFree = false;
 
   ViewportInvestigationDisplay *p_WidgetInvestigate = nullptr;
   KeyframePlayer *wShoutsLayer = nullptr;
@@ -993,8 +994,14 @@ private:
   bool is_audio_muted = false;
 
   ICMessageData *m_CurrentMessageData = new ICMessageData({}, false);
+  QMap<int, bool> m_FreecamKeysPressed = {};
 
 protected:
+  void keyPressEvent(QKeyEvent *event) override;
+  void keyReleaseEvent(QKeyEvent *event) override;
+
+  void mouseMoveEvent(QMouseEvent *event) override;
+
   void changeEvent(QEvent *) override;
   void closeEvent(QCloseEvent *event) override;
 };

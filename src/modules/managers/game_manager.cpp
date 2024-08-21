@@ -11,6 +11,9 @@ GameManager GameManager::s_Instance;
 
 void GameManager::StartGameLoop()
 {
+  m_CameraAnimation = new DROAnimation();
+  m_CameraAnimation->SetAnimationLoops(false);
+
   ReplayManager::get().RecordingStart();
   connect(&m_FrameTimer, &QTimer::timeout, this, &GameManager::RunGameLoop);
   m_FrameTimer.setInterval(1000 / m_FramesPerSecond);
@@ -101,7 +104,41 @@ void GameManager::RenderAnimationLoop(AnimTypes t_type)
 }
 
 
+void GameManager::UpdateCamera()
+{
 
+  NeoRenderer *l_Renderer = ThemeManager::get().GetWidgetType<NeoRenderer>("opengl_display");
+  if(l_Renderer == nullptr) return;
+
+  if(l_CurrentState == eStateFreeCam)
+  {
+    if(m_FreeCamInputs[Qt::Key::Key_W])
+    {
+      l_Renderer->TranslateTransform(QVector3D(0, 0, 0.1f));
+    }
+    if(m_FreeCamInputs[Qt::Key::Key_S])
+    {
+      l_Renderer->TranslateTransform(QVector3D(0, 0, -0.1f));
+    }
+    if(m_FreeCamInputs[Qt::Key::Key_A])
+    {
+      l_Renderer->TranslateTransform(QVector3D(0.1f, 0, 0));
+    }
+    if(m_FreeCamInputs[Qt::Key::Key_D])
+    {
+      l_Renderer->TranslateTransform(QVector3D(-0.1f, 0, 0));
+    }
+    l_Renderer->update();
+  }
+  else
+  {
+    double l_Value = m_CameraAnimation->GetCachedValue(eROTATION, m_GameUptime);
+    if(l_Value == -11037) return;
+    l_Renderer->SetRotation(QVector3D(-5, l_Value, 0));
+    l_Renderer->update();
+  }
+
+}
 
 
 void GameManager::setupGame()
@@ -201,13 +238,8 @@ void GameManager::RunGameLoop()
 
     RenderAnimationLoop(eAnimationShout);
     RenderAnimationLoop(eAnimationGM);
+    UpdateCamera();
 
-    NeoRenderer *l_Renderer = ThemeManager::get().GetWidgetType<NeoRenderer>("opengl_display");
-    if(l_Renderer != nullptr)
-    {
-      l_Renderer->TranslateRotation(QVector3D(0, 0.2f, 0));
-      l_Renderer->update();
-    }
     m_IsUpdateRunning = false;
     emit FrameComplete();
   }

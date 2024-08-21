@@ -5,6 +5,7 @@
 #include <aoapplication.h>
 #include <modules/globals/dro_math.h>
 #include <modules/widgets/investigation_display.h>
+#include <neo/readers/models/obj_model_reader.h>
 
 void PacketScene::HandleIncoming(QStringList t_Contents)
 {
@@ -14,7 +15,9 @@ void PacketScene::HandleIncoming(QStringList t_Contents)
   }
 
   VariableManager::get().setVariable("area_name", t_Contents.at(0));
+  VariableManager::get().setVariable("bg_name", t_Contents.at(1));
   VariableManager::get().setVariable("map_visual", t_Contents.at(2));
+
   if (AOApplication::getInstance()->GetCourtroomConstructed()) AOApplication::getInstance()->m_courtroom->handleAnimation("RoomTransition");
 }
 

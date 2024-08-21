@@ -8,6 +8,7 @@
 #include "modules/background/background_reader.h"
 #include "modules/background/legacy_background_reader.h"
 #include "modules/managers/variable_manager.h"
+#include <neo/viewport/neo_renderer.h>
 
 SceneManager SceneManager::s_Instance;
 
@@ -23,6 +24,9 @@ ICMessageData *SceneManager::ProcessIncomingMessage(QStringList t_message)
   if(m_CurrentMessageData != nullptr) delete m_CurrentMessageData;
   m_CurrentMessageData = new ICMessageData(t_message, true);
   setCurrentSpeaker(m_CurrentMessageData->m_CharacterFolder, m_CurrentMessageData->m_CharacterEmotion, (int)m_CurrentMessageData->m_ChatType);
+
+  GameManager::get().SetTrialCamera(m_CurrentMessageData->m_ClientId);
+
   return m_CurrentMessageData;
 }
 

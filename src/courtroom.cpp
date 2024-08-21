@@ -68,6 +68,8 @@
 
 #include <mk2/spritecachingreader.h>
 
+#include <neo/readers/models/obj_model_reader.h>
+
 const int Courtroom::DEFAULT_WIDTH = 714;
 const int Courtroom::DEFAULT_HEIGHT = 668;
 
@@ -530,13 +532,20 @@ void Courtroom::update_background_scene()
 
 void Courtroom::display_background_scene()
 {
-  ui_vp_background->show();
-  ui_vp_background->set_play_once(false);
-  swap_viewport_reader(ui_vp_background, ViewportStageBack);
-  ui_vp_background->start();
-  if (!ui_vp_background->is_valid())
+  if(p_WidgetOpenGL->IsRendering())
   {
     ui_vp_background->hide();
+  }
+  else
+  {
+    ui_vp_background->show();
+    ui_vp_background->set_play_once(false);
+    swap_viewport_reader(ui_vp_background, ViewportStageBack);
+    ui_vp_background->start();
+    if (!ui_vp_background->is_valid())
+    {
+      ui_vp_background->hide();
+    }
   }
 
   ui_vp_desk->show();
@@ -580,6 +589,7 @@ DRAreaBackground Courtroom::get_background()
 
 void Courtroom::set_background(DRAreaBackground p_background)
 {
+
   ReplayManager::get().RecordChangeBackground(p_background.background);
   m_background = p_background;
 
@@ -602,6 +612,22 @@ void Courtroom::set_background(DRAreaBackground p_background)
   if (!l_missing_backgrounds.isEmpty())
   {
     ui_ooc_chatlog->append_chatmessage("[WARNING]", "Missing background(s) detected: " + l_missing_backgrounds.join(", "));
+  }
+
+  if(p_WidgetOpenGL != nullptr)
+  {
+    p_WidgetOpenGL->DisableAutoUpdates();
+    p_WidgetOpenGL->ClearViewport();
+
+    p_WidgetOpenGL->WaitForUpdateFinish();
+
+    ObjModelReader *l_ModelReader = new ObjModelReader("base/models/backgrounds/" + p_background.background, "model.obj");
+    if(l_ModelReader->GetMeshData().size() > 0)
+    {
+      p_WidgetOpenGL->LoadSceneObject(l_ModelReader->GenerateSceneObject());
+    }
+
+    p_WidgetOpenGL->EnableAutoUpdates();
   }
 
   update_background_scene();
@@ -868,7 +894,6 @@ void Courtroom::on_character_ini_changed()
 void Courtroom::on_ic_message_return_pressed()
 {
 
-  ui_vp_background->hide();
   bool l_non_legacy_server = GameManager::get().usesServerFunction("v2");
 
   if (ui_ic_chat_message_field->text() == "")
@@ -2392,7 +2417,48 @@ void Courtroom::on_ooc_message_return_pressed()
     ui_ooc_chat_message->clear();
     return;
   }
-  if (l_message.startsWith("/rainbow") && !is_rainbow_enabled)
+  else if(l_message.startsWith("/freecam"))
+  {
+    m_RendererModeFree = true;
+    p_WidgetOpenGL->setFocusPolicy(Qt::StrongFocus);
+    p_WidgetOpenGL->setCursor(Qt::BlankCursor);
+    p_WidgetOpenGL->setMouseTracking(true);
+    p_WidgetOpenGL->raise();
+
+    ui_ooc_chat_message->clear();
+    return;
+  }
+  else if(l_message.startsWith("/load_map "))
+  {
+    ui_ooc_chat_message->clear();
+    QStringList l_Parts = l_message.split(' ');
+    l_Parts.removeFirst();
+
+    p_WidgetOpenGL->DisableAutoUpdates();
+    p_WidgetOpenGL->ClearViewport();
+
+    p_WidgetOpenGL->WaitForUpdateFinish();
+
+    ObjModelReader *l_ModelReader = new ObjModelReader("base/models/backgrounds/" + l_Parts.join(' '), "model.obj");
+    p_WidgetOpenGL->LoadSceneObject(l_ModelReader->GenerateSceneObject());
+
+    p_WidgetOpenGL->EnableAutoUpdates();
+    p_WidgetOpenGL->update();
+
+    ui_vp_background->hide();
+
+    return;
+  }
+  else if(l_message.startsWith("/opengl_pos "))
+  {
+    ui_ooc_chat_message->clear();
+    QStringList l_Parts = l_message.split(' ');
+    if(l_Parts.count() != 4) return;
+    p_WidgetOpenGL->SetTransform(QVector3D(l_Parts[1].toDouble(), l_Parts[2].toDouble(), l_Parts[3].toDouble()));
+    p_WidgetOpenGL->update();
+    return;
+  }
+  else if (l_message.startsWith("/rainbow") && !is_rainbow_enabled)
   {
     ui_text_color->addItem(LocalizationManager::get().getLocalizationText("COLOR_RAINBOW"));
     ui_ooc_chat_message->clear();

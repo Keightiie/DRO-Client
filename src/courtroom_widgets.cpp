@@ -100,12 +100,10 @@ void Courtroom::create_widgets()
   p_WidgetInvestigate->UpdateAlpha(255);
 
   p_WidgetOpenGL = new NeoRenderer(this);
+  //p_WidgetOpenGL->DisableAutoUpdates();
 
-  p_WidgetOpenGL->TranslateTransform(QVector3D(-1, -1,  3));
-  p_WidgetOpenGL->TranslateRotation(QVector3D(0, 90,  0));
-
-  ObjModelReader *l_ModelReader = new ObjModelReader("base/models/backgrounds/DR1-1 Trial Grounds/model.obj");
-  p_WidgetOpenGL->LoadSceneObject(l_ModelReader->GenerateSceneObject());
+  p_WidgetOpenGL->TranslateTransform(QVector3D(0, -1,  0));
+  p_WidgetOpenGL->TranslateRotation(QVector3D(-5, 90,  0));
 
   wShoutsLayer = new KeyframePlayer(this);
   wShoutsLayer->setAttribute(Qt::WA_TransparentForMouseEvents);
