@@ -7,6 +7,7 @@
 #include <QDateTime>
 #include <QMap>
 #include <QVector>
+#include <QVector3D>
 
 
 enum class ChatTypes
@@ -174,6 +175,13 @@ public:
   double mScaleMax = 0.9;
   double mPositionMinimum = 0;
   double mPositionMaximum = 1;
+
+  QVector3D m_ScenePosition;
+  QVector3D m_SceneRotation;
+
+  QVector3D m_LightPosition;
+  QVector3D m_LightColor;
+  QVector3D m_AmbientColor;
 };
 
 class DRBackgroundPosition

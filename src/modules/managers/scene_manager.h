@@ -31,6 +31,7 @@ public:
 
 
   void execLoadPlayerBackground(QString t_backgroundName);
+  QStringList getBackgroundModels();
   DRBackgroundSettings getBackgroundSettings();
   int getBackgroundPosition();
   QString getBackgroundPath(QString t_position);

@@ -34,6 +34,8 @@ HEADERS += \
   src/aosystemplayer.h \
   src/aotimer.h \
   src/commondefs.h \
+  src/config/player_config.h \
+  src/config/tabs/config_tab_graphics.h \
   src/courtroom.h \
   src/datatypes.h \
   src/debug_functions.h \
@@ -55,6 +57,7 @@ HEADERS += \
   src/drmasterclient.h \
   src/drmediatester.h \
   src/drmovie.h \
+  src/droconfig.h \
   src/drpacket.h \
   src/drpather.h \
   src/drplayerlistentry.h \
@@ -179,6 +182,8 @@ SOURCES += \
   src/audio_functions.cpp \
   src/charselect.cpp \
   src/commondefs.cpp \
+  src/config/player_config.cpp \
+  src/config/tabs/config_tab_graphics.cpp \
   src/courtroom.cpp \
   src/courtroom_character.cpp \
   src/courtroom_sfx.cpp \
@@ -202,6 +207,7 @@ SOURCES += \
   src/drmasterclient.cpp \
   src/drmediatester.cpp \
   src/drmovie.cpp \
+  src/droconfig.cpp \
   src/drpacket.cpp \
   src/drpather.cpp \
   src/drplayerlistentry.cpp \
@@ -322,8 +328,10 @@ DISTFILES +=
 
 FORMS += \
   res/ui/config_panel.ui \
+  src/config/tabs/config_tab_graphics.ui \
   src/debugmenuui.ui \
   src/drevidencedialogue.ui \
+  src/droconfig.ui \
   src/drserverinfoeditor.ui \
   src/evidencedialogue.ui
 

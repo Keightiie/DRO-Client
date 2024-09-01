@@ -33,8 +33,17 @@ void BackgroundReader::execLoadBackground(QString t_backgroundName)
       ResetTargetObject();
     }
 
-    SetTargetObject("settings");
+    setModelList(getStringArrayValue("models"));
     DRBackgroundSettings l_settings;
+    SetTargetObject("scene");
+    l_settings.m_ScenePosition = getVector3DValue("position");
+    l_settings.m_SceneRotation = getVector3DValue("rotation");
+    l_settings.m_LightPosition = getVector3DValue("light_position");
+    l_settings.m_AmbientColor = getVector3DColorValue("ambient_color");
+    l_settings.m_LightColor = getVector3DColorValue("light_color");
+    ResetTargetObject();
+
+    SetTargetObject("settings");
     l_settings.isDynamic = getBoolValue("dynamic");
     l_settings.mScaleMinimum = getDoubleValue("height_scale_minimum");
     l_settings.mScaleMax = getDoubleValue("height_scale_max");

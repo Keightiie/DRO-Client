@@ -57,7 +57,7 @@ AOConfigPanel::AOConfigPanel(AOApplication *p_ao_app, QWidget *p_parent)
 
   QStringListModel *model = new QStringListModel(this);
   QStringList items;
-  items << "General" << "Audio" << "Content" << "Message" << "Advanced" << "About";
+  items << "General" << "Graphics" << "Audio" << "Content" << "Message" << "Advanced" << "About";
   model->setStringList(items);
   pTabFilters->setModel(model);
   QModelIndex firstIndex = model->index(0, 0);
@@ -834,6 +834,7 @@ void AOConfigPanel::updateTabsVisibility(const QModelIndex &current, const QMode
 
   std::map<QString, QVector<int>> tabInfoMap = {
       {"General", {0, 1}},
+      {"Graphics", {11}},
       {"Audio", {2}},
       {"Content", {3, 4}},
       {"Message", {5, 6, 7}},

@@ -1,3 +1,4 @@
+#include "config/player_config.h"
 #include "courtroom.h"
 
 #include "aoapplication.h"
@@ -99,11 +100,13 @@ void Courtroom::create_widgets()
   p_WidgetInvestigate = new ViewportInvestigationDisplay(this, ao_app);
   p_WidgetInvestigate->UpdateAlpha(255);
 
-  p_WidgetOpenGL = new NeoRenderer(50, this);
-  //p_WidgetOpenGL->DisableAutoUpdates();
+  if(LOADED_CONFIG_DRO.getBool("useOpenGL"))
+  {
+    p_WidgetOpenGL = new NeoRenderer(-1, this);
+    p_WidgetOpenGL->TranslateTransform(QVector3D(0, -0.8,  -3));
+    p_WidgetOpenGL->TranslateRotation(QVector3D(-5, 90,  0));
+  }
 
-  p_WidgetOpenGL->TranslateTransform(QVector3D(0, -0.8,  -3));
-  p_WidgetOpenGL->TranslateRotation(QVector3D(-5, 90,  0));
 
   wShoutsLayer = new KeyframePlayer(this);
   wShoutsLayer->setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -797,11 +800,16 @@ void Courtroom::reset_widget_names()
       {"evidence_present", wEvidencePresent},
       {"chara_animations", wCharaAnimList},
       {"investigate_display", p_WidgetInvestigate},
-      {"opengl_display", p_WidgetOpenGL},
       {"shouts_player", wShoutsLayer},
       {"camera_display", m_GMCameraDisplay},
       {"screenshot", p_ButtonScreenshot}
   };
+
+
+  if(p_WidgetOpenGL != nullptr)
+  {
+    widget_names["opengl_display"] = p_WidgetOpenGL;
+  }
 
     ThemeManager::get().RegisterWidgetGenericBulk(widget_names);
 }
@@ -1430,6 +1438,7 @@ void Courtroom::set_widgets()
 
 void Courtroom::setupWidgetElement(QWidget *widget, QString name, bool visible)
 {
+  if(widget == nullptr) return;
   set_size_and_pos(widget, name, COURTROOM_DESIGN_INI, ao_app);
   if(!visible) widget->hide();
 }

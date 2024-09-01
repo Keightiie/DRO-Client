@@ -51,3 +51,13 @@ DRBackgroundSettings BackgroundData::getSettings()
 {
   return mSettings;
 }
+
+void BackgroundData::setModelList(QStringList l_Models)
+{
+  m_ModelList = l_Models;
+}
+
+QStringList BackgroundData::getModelList()
+{
+  return m_ModelList;
+}

@@ -68,6 +68,25 @@ QVector2D JSONReader::getVector2DValue(QString string)
   return return_data;
 }
 
+QVector3D JSONReader::getVector3DValue(QString string)
+{
+  if(!mTargetObject.contains(string)) return QVector3D(1, 1, 1);
+  QVector3D return_data = {};
+  return_data.setX(mTargetObject.value(string).toObject().value("x").toDouble());
+  return_data.setY(mTargetObject.value(string).toObject().value("y").toDouble());
+  return_data.setZ(mTargetObject.value(string).toObject().value("z").toDouble());
+  return return_data;
+}
+
+QVector3D JSONReader::getVector3DColorValue(QString string)
+{
+  QVector3D return_data = {};
+  return_data.setX(mTargetObject.value(string).toObject().value("r").toDouble());
+  return_data.setY(mTargetObject.value(string).toObject().value("g").toDouble());
+  return_data.setZ(mTargetObject.value(string).toObject().value("b").toDouble());
+  return return_data;
+}
+
 QJsonArray JSONReader::getArrayValue(QString string)
 {
   return mTargetObject.value(string).toArray();

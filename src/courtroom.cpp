@@ -532,7 +532,7 @@ void Courtroom::update_background_scene()
 
 void Courtroom::display_background_scene()
 {
-  if(p_WidgetOpenGL->IsRendering())
+  if(p_WidgetOpenGL != nullptr && p_WidgetOpenGL->IsRendering())
   {
     ui_vp_background->hide();
   }
@@ -614,18 +614,31 @@ void Courtroom::set_background(DRAreaBackground p_background)
     ui_ooc_chatlog->append_chatmessage("[WARNING]", "Missing background(s) detected: " + l_missing_backgrounds.join(", "));
   }
 
-  if(p_WidgetOpenGL != nullptr)
+  if(p_WidgetOpenGL != nullptr && wglGetCurrentContext() != nullptr)
   {
+    SceneManager::get().execLoadPlayerBackground(p_background.background);
     p_WidgetOpenGL->DisableAutoUpdates();
     p_WidgetOpenGL->ClearViewport();
 
     p_WidgetOpenGL->WaitForUpdateFinish();
 
-    ObjModelReader *l_ModelReader = new ObjModelReader("base/models/backgrounds/" + p_background.background, "model.obj");
-    if(l_ModelReader->GetMeshData().size() > 0)
+    DRBackgroundSettings l_settings = SceneManager::get().getBackgroundSettings();
+
+    p_WidgetOpenGL->GetScene()->SetAmbientColor(l_settings.m_AmbientColor);
+    p_WidgetOpenGL->GetScene()->SetLightColor(l_settings.m_LightColor);
+    p_WidgetOpenGL->GetScene()->GetLightTransform()->SetPosition(l_settings.m_LightPosition);
+
+    for(QString l_ModelName : SceneManager::get().getBackgroundModels())
     {
-      p_WidgetOpenGL->LoadSceneObject(l_ModelReader->GenerateSceneObject());
+      QString l_Path = ao_app->get_background_path(p_background.background) + "/models";
+      ObjModelReader *l_ModelReader = new ObjModelReader(l_Path, l_ModelName);
+      if(l_ModelReader->GetMeshData().size() > 0)
+      {
+        p_WidgetOpenGL->LoadSceneObject(l_ModelReader->GenerateSceneObject());
+      }
     }
+    p_WidgetOpenGL->SetTransform(l_settings.m_ScenePosition);
+    p_WidgetOpenGL->SetRotation(l_settings.m_SceneRotation);
 
     p_WidgetOpenGL->EnableAutoUpdates();
   }

@@ -109,6 +109,7 @@ void GameManager::UpdateCamera()
 
   NeoRenderer *l_Renderer = ThemeManager::get().GetWidgetType<NeoRenderer>("opengl_display");
   if(l_Renderer == nullptr) return;
+  if(!l_Renderer->IsRendering()) return;
 
   if(l_CurrentState == eStateFreeCam)
   {
@@ -137,7 +138,8 @@ void GameManager::UpdateCamera()
     l_Renderer->SetRotation(QVector3D(-5, l_Value, 0));
     //l_Renderer->update();
   }
-
+  //l_Renderer->RendererUpdate();
+  l_Renderer->update();
 }
 
 

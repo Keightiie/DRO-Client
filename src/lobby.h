@@ -2,6 +2,7 @@
 #define LOBBY_H
 
 #include "datatypes.h"
+#include "droconfig.h"
 
 #include <QComboBox>
 #include <QMainWindow>
@@ -74,6 +75,7 @@ private:
   };
   ServerFilter m_server_filter = NoFilter;
 
+  DROConfig *m_DroConfig = nullptr;
   AOButton *wReplayPlay = nullptr;
   AOButton *pUiGalleryToggle = nullptr;
   QListWidget *pUiReplayList = nullptr;

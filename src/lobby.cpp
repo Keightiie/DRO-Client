@@ -19,6 +19,7 @@
 #include "drtextedit.h"
 #include "drtheme.h"
 #include "modules/managers/scene_manager.h"
+#include "droconfig.h"
 #include "theme.h"
 #include "version.h"
 
@@ -47,6 +48,7 @@ Lobby::Lobby(AOApplication *p_ao_app)
     : QMainWindow()
 {
   ao_app = p_ao_app;
+  m_DroConfig = new DROConfig();
   ao_config = new AOConfig(this);
   m_master_client = new DRMasterClient(this);
 
@@ -694,6 +696,7 @@ void Lobby::on_config_pressed()
 
 void Lobby::on_config_released()
 {
+  m_DroConfig->show();
   ui_config_panel->set_image("lobby_config_panel.png");
   ao_app->toggle_config_panel();
 }

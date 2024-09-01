@@ -46,6 +46,12 @@ void SceneManager::execLoadPlayerBackground(QString t_backgroundName)
   p_BackgroundCurrent->execLoadBackground(t_backgroundName);
 }
 
+QStringList SceneManager::getBackgroundModels()
+{
+  if(p_BackgroundCurrent == nullptr) return {};
+  return p_BackgroundCurrent->getModelList();
+}
+
 int SceneManager::getBackgroundPosition()
 {
   if(p_BackgroundCurrent == nullptr) return 0;
