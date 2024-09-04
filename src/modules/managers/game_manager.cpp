@@ -8,6 +8,8 @@
 #include <neo/viewport/neo_renderer.h>
 
 GameManager GameManager::s_Instance;
+GLSceneCourtroom NEO_SCENE_COURTROOM;
+DRBackgroundSettings CURRENT_BACKGROUND;
 
 void GameManager::StartGameLoop()
 {

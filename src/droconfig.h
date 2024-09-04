@@ -23,6 +23,10 @@ public:
 private slots:
   void on_ConfigCategoryList_currentTextChanged(const QString &currentText);
 
+  void on_BtnSaveConfig_clicked();
+
+  void on_pushButton_clicked();
+
 private:
   Ui::DROConfig *ui;
 

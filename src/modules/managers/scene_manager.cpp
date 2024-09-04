@@ -25,7 +25,13 @@ ICMessageData *SceneManager::ProcessIncomingMessage(QStringList t_message)
   m_CurrentMessageData = new ICMessageData(t_message, true);
   setCurrentSpeaker(m_CurrentMessageData->m_CharacterFolder, m_CurrentMessageData->m_CharacterEmotion, (int)m_CurrentMessageData->m_ChatType);
 
-  GameManager::get().SetTrialCamera(m_CurrentMessageData->m_ClientId);
+
+  int l_CameraOrder = m_CurrentMessageData->m_ClientId;
+  if(CURRENT_BACKGROUND.m_PlayerOrder.contains(m_CurrentMessageData->m_CharacterFolder))
+  {
+    l_CameraOrder = CURRENT_BACKGROUND.m_PlayerOrder.indexOf(m_CurrentMessageData->m_CharacterFolder);
+  }
+  GameManager::get().SetTrialCamera(l_CameraOrder);
 
   return m_CurrentMessageData;
 }

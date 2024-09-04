@@ -102,9 +102,15 @@ void Courtroom::create_widgets()
 
   if(LOADED_CONFIG_DRO.getBool("useOpenGL"))
   {
-    p_WidgetOpenGL = new NeoRenderer(-1, this);
+    p_WidgetOpenGL = new NeoRenderer(&NEO_SCENE_COURTROOM, -1, this);
     p_WidgetOpenGL->TranslateTransform(QVector3D(0, -0.8,  -3));
     p_WidgetOpenGL->TranslateRotation(QVector3D(-5, 90,  0));
+
+
+    QSurfaceFormat l_SurfaceFormat;
+    l_SurfaceFormat.setSwapInterval(LOADED_CONFIG_DRO.getInt("gl_swap", 0));
+    l_SurfaceFormat.setSamples(LOADED_CONFIG_DRO.getInt("gl_swap", 4));
+    p_WidgetOpenGL->setFormat(l_SurfaceFormat);
   }
 
 

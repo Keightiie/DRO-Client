@@ -9,7 +9,6 @@ DROConfig::DROConfig(QWidget *parent) : QMainWindow(parent), ui(new Ui::DROConfi
   ui->setupUi(this);
   LOADED_CONFIG_DRO.loadConfig();
   CreateTabs();
-  qDebug() << LOADED_CONFIG_DRO.getBool("useOpenGL");
 }
 
 DROConfig::~DROConfig()
@@ -39,5 +38,17 @@ void DROConfig::SwitchCategory(QString l_Category)
 void DROConfig::on_ConfigCategoryList_currentTextChanged(const QString &currentText)
 {
   SwitchCategory(currentText);
+}
+
+
+void DROConfig::on_BtnSaveConfig_clicked()
+{
+  LOADED_CONFIG_DRO.saveConfig();
+}
+
+
+void DROConfig::on_pushButton_clicked()
+{
+  this->hide();
 }
 

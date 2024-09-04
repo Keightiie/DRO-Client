@@ -16,12 +16,14 @@
 #include <modules/networking/legacy_network_handler.h>
 #include <modules/networking/neo_network_handler.h>
 #include <neo/viewport/neo_renderer.h>
+#include <opengl/glscenecourtroom.h>
 
 enum GameStates
 {
   eStateDefault,
   eStateFreeCam
 };
+
 
 class GameManager : public QObject
 {
@@ -46,18 +48,24 @@ public:
   void StopGameLoop();
   void RestartGameLoop();
 
+  void SetJudgeCamera()
+  {
+  }
+
   void SetTrialCamera(int l_ID)
   {
-    int l_RotValue = (l_ID + 2) % 5;
-
-
+    int l_RotValue = l_ID % 16;
 
     NeoRenderer *l_Renderer = ThemeManager::get().GetWidgetType<NeoRenderer>("opengl_display");
     if(l_Renderer == nullptr) return;
 
     m_CameraAnimation->SetKeyframes({});
-    m_CameraAnimation->AddKeyframe(m_GameUptime, eROTATION, l_Renderer->GetRotation().y(), EASE, EASE);
-    m_CameraAnimation->AddKeyframe(m_GameUptime + 250, eROTATION, -45 + (l_RotValue * 22.5), EASE, EASE);
+    double l_OldRotation = l_Renderer->GetRotation().y();
+    double l_NewRotation = l_RotValue * 22.5;
+    int l_RotationTime = 250 + (std::abs(l_OldRotation - l_NewRotation) * 0.25);
+
+    m_CameraAnimation->AddKeyframe(m_GameUptime, eROTATION, l_OldRotation, EASE, EASE);
+    m_CameraAnimation->AddKeyframe(m_GameUptime + l_RotationTime, eROTATION, l_NewRotation, EASE, EASE);
     m_CameraAnimation->CacheAnimation();
     m_CameraAnimationStart = m_GameUptime;
   }
@@ -143,5 +151,9 @@ private:
   void setupGameEffects();
   void setupGameShouts();
 };
+
+
+extern GLSceneCourtroom NEO_SCENE_COURTROOM;
+extern DRBackgroundSettings CURRENT_BACKGROUND;
 
 #endif // GAMEMANAGER_H

@@ -153,6 +153,8 @@ HEADERS += \
   src/modules/widgets/taggablelineedit.h \
   src/modules/widgets/typewritertextedit.h \
   src/modules/widgets/viewport_overlay.h \
+  src/opengl/glfogobject.h \
+  src/opengl/glscenecourtroom.h \
   src/theme.h \
   src/utils.h \
   src/version.h
@@ -303,6 +305,8 @@ SOURCES += \
   src/modules/widgets/taggablelineedit.cpp \
   src/modules/widgets/typewritertextedit.cpp \
   src/modules/widgets/viewport_overlay.cpp \
+  src/opengl/glfogobject.cpp \
+  src/opengl/glscenecourtroom.cpp \
   src/path_functions.cpp \
   src/server_socket.cpp \
   src/mk2/spritereader.cpp \

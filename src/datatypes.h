@@ -174,14 +174,20 @@ public:
   double mScaleMinimum = 0.1;
   double mScaleMax = 0.9;
   double mPositionMinimum = 0;
+  int mMaxRotations = 16;
+  int mMaxAngle = 360;
   double mPositionMaximum = 1;
 
   QVector3D m_ScenePosition;
+  QVector3D m_JudgePosition;
+  QVector3D m_JudgeRotation;
   QVector3D m_SceneRotation;
 
   QVector3D m_LightPosition;
   QVector3D m_LightColor;
   QVector3D m_AmbientColor;
+  QVector3D m_FogColor;
+  QStringList m_PlayerOrder = {};
 };
 
 class DRBackgroundPosition

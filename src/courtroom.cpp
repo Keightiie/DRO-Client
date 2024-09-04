@@ -617,30 +617,36 @@ void Courtroom::set_background(DRAreaBackground p_background)
   if(p_WidgetOpenGL != nullptr && wglGetCurrentContext() != nullptr)
   {
     SceneManager::get().execLoadPlayerBackground(p_background.background);
-    p_WidgetOpenGL->DisableAutoUpdates();
-    p_WidgetOpenGL->ClearViewport();
+    NEO_SCENE_COURTROOM.GameObjectsClear();
 
     p_WidgetOpenGL->WaitForUpdateFinish();
 
-    DRBackgroundSettings l_settings = SceneManager::get().getBackgroundSettings();
+    CURRENT_BACKGROUND = SceneManager::get().getBackgroundSettings();
 
-    p_WidgetOpenGL->GetScene()->SetAmbientColor(l_settings.m_AmbientColor);
-    p_WidgetOpenGL->GetScene()->SetLightColor(l_settings.m_LightColor);
-    p_WidgetOpenGL->GetScene()->GetLightTransform()->SetPosition(l_settings.m_LightPosition);
-
+    p_WidgetOpenGL->GetScene()->SetAmbientColor(CURRENT_BACKGROUND.m_AmbientColor);
+    p_WidgetOpenGL->GetScene()->SetLightColor(CURRENT_BACKGROUND.m_LightColor);
+    p_WidgetOpenGL->GetScene()->GetLightTransform()->SetPosition(CURRENT_BACKGROUND.m_LightPosition);
+    if(CURRENT_BACKGROUND.m_FogColor.x() != 0 && CURRENT_BACKGROUND.m_FogColor.y() != 0 && CURRENT_BACKGROUND.m_FogColor.z() != 0)
+    {
+      GLFogObject *l_Fog = new GLFogObject();
+      l_Fog->UpdateDimensions(960, 544, QVector4D(CURRENT_BACKGROUND.m_FogColor.x(), CURRENT_BACKGROUND.m_FogColor.y(), CURRENT_BACKGROUND.m_FogColor.z(), 1));
+      NEO_SCENE_COURTROOM.SetFog(l_Fog);
+    }
+    else
+    {
+      NEO_SCENE_COURTROOM.SetFog(nullptr);
+    }
     for(QString l_ModelName : SceneManager::get().getBackgroundModels())
     {
       QString l_Path = ao_app->get_background_path(p_background.background) + "/models";
       ObjModelReader *l_ModelReader = new ObjModelReader(l_Path, l_ModelName);
       if(l_ModelReader->GetMeshData().size() > 0)
       {
-        p_WidgetOpenGL->LoadSceneObject(l_ModelReader->GenerateSceneObject());
+        NEO_SCENE_COURTROOM.GameObjectsAdd(l_ModelReader->GenerateSceneObject());
       }
     }
-    p_WidgetOpenGL->SetTransform(l_settings.m_ScenePosition);
-    p_WidgetOpenGL->SetRotation(l_settings.m_SceneRotation);
-
-    p_WidgetOpenGL->EnableAutoUpdates();
+    p_WidgetOpenGL->SetTransform(CURRENT_BACKGROUND.m_ScenePosition);
+    p_WidgetOpenGL->SetRotation(CURRENT_BACKGROUND.m_SceneRotation);
   }
 
   update_background_scene();
@@ -2447,15 +2453,13 @@ void Courtroom::on_ooc_message_return_pressed()
     QStringList l_Parts = l_message.split(' ');
     l_Parts.removeFirst();
 
-    p_WidgetOpenGL->DisableAutoUpdates();
-    p_WidgetOpenGL->ClearViewport();
+    NEO_SCENE_COURTROOM.GameObjectsClear();
 
     p_WidgetOpenGL->WaitForUpdateFinish();
 
     ObjModelReader *l_ModelReader = new ObjModelReader("base/models/backgrounds/" + l_Parts.join(' '), "model.obj");
-    p_WidgetOpenGL->LoadSceneObject(l_ModelReader->GenerateSceneObject());
+    NEO_SCENE_COURTROOM.GameObjectsAdd(l_ModelReader->GenerateSceneObject());
 
-    p_WidgetOpenGL->EnableAutoUpdates();
     //p_WidgetOpenGL->update();
 
     ui_vp_background->hide();

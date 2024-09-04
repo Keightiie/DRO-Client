@@ -14,15 +14,15 @@ SceneTestingLabs::SceneTestingLabs(QWidget *parent) : QWidget{parent}
 
 void SceneTestingLabs::ConstructWidgets()
 {
-  NeoRenderer *l_NeoViewport = new NeoRenderer(50);
-  l_NeoViewport->resize(960, 544);
-  l_NeoViewport->show();
+  //NeoRenderer *l_NeoViewport = new NeoRenderer(50);
+  //l_NeoViewport->resize(960, 544);
+  //l_NeoViewport->show();
 
-  l_NeoViewport->TranslateTransform(QVector3D(-1, -1,  3));
-  l_NeoViewport->TranslateRotation(QVector3D(0, 90,  0));
+  //l_NeoViewport->TranslateTransform(QVector3D(-1, -1,  3));
+  //l_NeoViewport->TranslateRotation(QVector3D(0, 90,  0));
 
-  ObjModelReader *l_ModelReader = new ObjModelReader("base/models/backgrounds/DR1-1 Trial Grounds", "model.obj");
-  l_NeoViewport->LoadSceneObject(l_ModelReader->GenerateSceneObject());
+  //ObjModelReader *l_ModelReader = new ObjModelReader("base/models/backgrounds/DR1-1 Trial Grounds", "model.obj");
+  //l_NeoViewport->LoadSceneObject(l_ModelReader->GenerateSceneObject());
 }
 
 void SceneTestingLabs::OnPlayAnimationClicked()
