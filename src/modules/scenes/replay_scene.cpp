@@ -8,6 +8,8 @@
 #include <modules/managers/audio_manager.h>
 #include <modules/managers/replay_manager.h>
 
+#include "dro/rendering/gl_viewport_widget.h"
+
 ReplayScene::ReplayScene(AOApplication *p_ao_app, QWidget *parent) : QWidget(parent)
 {
   pAOApp = p_ao_app;
@@ -50,12 +52,14 @@ void ReplayScene::setMsgOperation(QMap<QString, QString> t_vars)
   m_Viewport->ToggleChatbox(false);
 
   m_Viewport->ProcessIncomingMessage(m_MessageData);
+  m_NovelLayer->UpdateNovel(*m_MessageData);
 
 }
 
 void ReplayScene::setBackground(QString t_name)
 {
   m_Viewport->SetBackground(t_name);
+  m_NovelLayer->UpdateBackground(t_name);
 }
 
 void ReplayScene::setWeather(QString t_weather)
@@ -95,6 +99,14 @@ void ReplayScene::OnScrubberSliderReleased()
   ReplayManager::get().PlaybackProgressSlider(m_PlaybackScrubber->value());
 }
 
+void ReplayScene::Frame()
+{
+  if(m_NovelLayer != nullptr)
+  {
+    m_NovelLayer->OnUpdate();
+  }
+}
+
 void ReplayScene::constructWidgets()
 {
   ThemeManager::get().RegisterWidgetGenericBulk({});
@@ -117,11 +129,19 @@ void ReplayScene::constructWidgets()
   ThemeManager::get().AutoAdjustWidgetDimensions(m_PlaybackScrubber, "scrubber", SceneTypeReplays);
   ThemeManager::get().RegisterWidgetGeneric("scrubber", m_PlaybackScrubber);
 
+  m_GLViewport = new GLViewportWidget(this);
+  m_GLViewport->move(960, 0);
+  m_GLViewport->resize(960, 544);
+  m_GLViewport->show();
 
   //Connections
   connect(m_Viewport, SIGNAL(VideoDone()), this, SLOT(videoDone()));
   connect(m_Viewport, SIGNAL(PreanimDone()), this, SLOT(preanim_done()));
   connect(m_PlaybackScrubber, SIGNAL(sliderReleased()), this, SLOT(OnScrubberSliderReleased()));
+
+
+  connect(m_GLViewport, &GLViewportWidget::GLInitialize, this, &ReplayScene::ViewportLoaded);
+  connect(m_GLViewport, &GLViewportWidget::FrameComplete, this, &ReplayScene::Frame);
 
   //Extra Stuff
          //ThemeManager::get().createButtonWidget("return_to_lobby", this);
@@ -142,4 +162,9 @@ void ReplayScene::keyPressEvent(QKeyEvent *event)
   {
     QWidget::keyPressEvent(event);
   }
+}
+
+void ReplayScene::ViewportLoaded()
+{
+  m_NovelLayer = new NovelLayer();
 }

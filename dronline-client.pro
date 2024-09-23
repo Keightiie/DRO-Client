@@ -57,6 +57,17 @@ HEADERS += \
   src/drmasterclient.h \
   src/drmediatester.h \
   src/drmovie.h \
+  src/dro/debug/profiling.h \
+  src/dro/rendering/dro_texture.h \
+  src/dro/rendering/gl/buffers.h \
+  src/dro/rendering/gl/dro_shader.h \
+  src/dro/rendering/gl/renderer.h \
+  src/dro/rendering/gl/renderer2d.h \
+  src/dro/rendering/gl_viewport_widget.h \
+  src/dro/rendering/rendering_layer.h \
+  src/dro/rendering/viewport_animator.h \
+  src/dro/rendering/viewport_camera.h \
+  src/dro/rendering/viewport_entity.h \
   src/droconfig.h \
   src/drpacket.h \
   src/drpather.h \
@@ -209,6 +220,17 @@ SOURCES += \
   src/drmasterclient.cpp \
   src/drmediatester.cpp \
   src/drmovie.cpp \
+  src/dro/debug/profiling.cpp \
+  src/dro/rendering/dro_texture.cpp \
+  src/dro/rendering/gl/buffers.cpp \
+  src/dro/rendering/gl/dro_shader.cpp \
+  src/dro/rendering/gl/renderer.cpp \
+  src/dro/rendering/gl/renderer2d.cpp \
+  src/dro/rendering/gl_viewport_widget.cpp \
+  src/dro/rendering/rendering_layer.cpp \
+  src/dro/rendering/viewport_animator.cpp \
+  src/dro/rendering/viewport_camera.cpp \
+  src/dro/rendering/viewport_entity.cpp \
   src/droconfig.cpp \
   src/drpacket.cpp \
   src/drpather.cpp \

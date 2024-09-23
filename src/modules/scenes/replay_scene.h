@@ -15,10 +15,12 @@
 #include <drtextedit.h>
 #include <qslider.h>
 #include "modules/widgets/typewritertextedit.h"
+#include <dro/rendering/gl_viewport_widget.h>
 #include <mk2/graphicsvideoscreen.h>
 #include <modules/widgets/droviewportwidget.h>
 #include "modules/scenes/viewport_scene.h"
 #include <modules/widgets/replay_hover_controller.h>
+#include "dro/rendering/rendering_layer.h"
 
 class ReplayScene : public QWidget
 {
@@ -43,6 +45,7 @@ public slots:
   void videoDone();
   void preanim_done();
   void OnScrubberSliderReleased();
+  void Frame();
 
 private:
   AOApplication *pAOApp = nullptr;
@@ -55,13 +58,18 @@ private:
 protected:
   void keyPressEvent(QKeyEvent *event) override;
 
+public slots:
+  void ViewportLoaded();
+
 private:
   //Viewport
+  GLViewportWidget *m_GLViewport = nullptr;
   ViewportScene *m_Viewport = nullptr;
 
   DRTextEdit *vpShowname = nullptr;
   QSlider *m_PlaybackScrubber = nullptr;
   ReplayHoverController *m_ReplayHoverPanel = nullptr;
+  NovelLayer *m_NovelLayer = nullptr;
 
   //To Be Moved
 

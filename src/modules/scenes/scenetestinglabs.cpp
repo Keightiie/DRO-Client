@@ -1,7 +1,5 @@
 #include "scenetestinglabs.h"
-#include <aoimagedisplay.h>
-#include "neo/viewport/neo_renderer.h"
-#include "neo/readers/models/obj_model_reader.h"
+#include "dro/rendering/gl/renderer2d.h"
 
 
 SceneTestingLabs::SceneTestingLabs(QWidget *parent) : QWidget{parent}
@@ -10,22 +8,37 @@ SceneTestingLabs::SceneTestingLabs(QWidget *parent) : QWidget{parent}
   setWindowTitle("Testing Labs");
   setFocusPolicy(Qt::StrongFocus);
   setAttribute(Qt::WA_DeleteOnClose, true );
+
+
+  m_Viewport->setFocusPolicy(Qt::StrongFocus);
+  m_Viewport->setUpdatesEnabled(true);
+
+  connect(m_Viewport, &GLViewportWidget::GLInitialize, this, &SceneTestingLabs::ViewportLoaded);
+  connect(m_Viewport, &GLViewportWidget::FrameComplete, this, &SceneTestingLabs::ViewportUpdate);
+
+
+
+
 }
 
 void SceneTestingLabs::ConstructWidgets()
 {
-  //NeoRenderer *l_NeoViewport = new NeoRenderer(50);
-  //l_NeoViewport->resize(960, 544);
-  //l_NeoViewport->show();
-
-  //l_NeoViewport->TranslateTransform(QVector3D(-1, -1,  3));
-  //l_NeoViewport->TranslateRotation(QVector3D(0, 90,  0));
-
-  //ObjModelReader *l_ModelReader = new ObjModelReader("base/models/backgrounds/DR1-1 Trial Grounds", "model.obj");
-  //l_NeoViewport->LoadSceneObject(l_ModelReader->GenerateSceneObject());
+  this->resize(960, 544);
+  m_Viewport = new GLViewportWidget(this);  m_Viewport->move(0, 0);
+  m_Viewport->resize(960, 544);
+  m_Viewport->show();
 }
 
-void SceneTestingLabs::OnPlayAnimationClicked()
+void SceneTestingLabs::ViewportLoaded()
 {
+  m_NovelLayer = new NovelLayer();
+}
 
+void SceneTestingLabs::ViewportUpdate()
+{
+  if(m_NovelLayer != nullptr)
+  {
+    m_NovelLayer->OnUpdate();
+  }
+  //m_Viewport->update();
 }

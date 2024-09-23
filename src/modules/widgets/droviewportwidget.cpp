@@ -239,6 +239,7 @@ void DROViewportWidget::PlaySplashAnimation(QString t_name)
 
 void DROViewportWidget::SetBackground(QString t_background)
 {
+  if(t_background == m_CurrentBackground) return;
   m_CurrentBackground = t_background;
 
 
