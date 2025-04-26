@@ -1,6 +1,6 @@
 #include "courtroom_layout.h"
 
-#include <DRStickerViewer.h>
+#include <drstickerviewer.h>
 #include <aoapplication.h>
 #include <drchatlog.h>
 #include <QString>
