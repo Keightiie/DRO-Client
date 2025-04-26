@@ -70,12 +70,12 @@ jobs:
         curl http://www.un4seen.com/files/bass24-linux.zip -o ./bass.zip
         unzip -d ./bass -o ./bass.zip
         cp ./bass/bass.h ./3rd/bass/bass.h
-        cp ./bass/x64/libbass.so ./3rd/libbass.so
+        cp ./bass/libs/x86_64/libbass.so ./3rd/libbass.so
 
         curl http://www.un4seen.com/files/bassopus24-linux.zip -o ./bassopus.zip
         unzip -d ./bass -o ./bassopus.zip
         cp ./bass/bassopus.h ./3rd/bass/bassopus.h
-        cp ./bass/x64/libbassopus.so ./3rd/libbassopus.so
+        cp ./bass/libs/x86_64/libbassopus.so ./3rd/libbassopus.so
 
     - name: Install BASS (MacOS)
       if: contains(matrix.os, 'macos')
