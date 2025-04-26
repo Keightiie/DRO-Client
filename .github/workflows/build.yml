@@ -42,12 +42,12 @@ jobs:
         mkdir ./3rd/discord-rpc
         mkdir ./3rd/openssl
         
-    - name: Install OpenSSL (Windows)
-      if: contains(matrix.os, 'windows')
-      run: |
-        curl -L https://mirror.firedaemon.com/OpenSSL/openssl-1.1.1q.zip -o openssl.zip
-        unzip -d ./openssl -o ./openssl.zip
-        cp ./openssl/openssl-1.1/x64/bin/*.dll ./3rd
+    # - name: Install OpenSSL (Windows)
+    #   if: contains(matrix.os, 'windows')
+    #   run: |
+    #     curl -L https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1q/openssl-1.1.1q.tar.gz -o openssl.tar.gz
+    #     unzip -d ./openssl -o ./openssl.zip
+    #     cp ./openssl/openssl-1.1.1q/x64/bin/*.dll ./3rd
 
     - name: Install BASS (Windows)
       if: contains(matrix.os, 'windows')
